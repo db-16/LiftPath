@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FitnessApp</string>
+    <string-array name="goals_array">
+        <item>lose</item>
+        <item>gain</item>
+        <item>maintain</item>
+    </string-array>
+</resources>
