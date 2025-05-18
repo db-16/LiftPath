@@ -9,8 +9,17 @@ public class User {
     private String idRoutine;
     private String mail;
     private String goal; // objetivo como texto
+    private String goalType; // "GAIN", "LOSE", "MAINTAIN"
 
     public User() {}
+
+    public User(String name, String email, double weight, double goalWeight, String goalType) {
+        this.name = name;
+        this.mail = email;
+        this.weight = weight;
+        this.goalWeight = goalWeight;
+        this.goalType = goalType;
+    }
 
     // Setters
     public void setId(String id) {
@@ -41,6 +50,10 @@ public class User {
         this.goal = goal;
     }
 
+    public void setGoalType(String goalType) {
+        this.goalType = goalType;
+    }
+
     // Getters
     public String getId() {
         return id;
@@ -68,5 +81,9 @@ public class User {
 
     public String getGoal() {
         return goal;
+    }
+
+    public String getGoalType() {
+        return goalType;
     }
 }

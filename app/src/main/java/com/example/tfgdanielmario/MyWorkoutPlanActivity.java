@@ -18,6 +18,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 public class MyWorkoutPlanActivity extends AppCompatActivity {
 
     private static final int ADD_TRAINING_SESSION_REQUEST = 1001;
@@ -31,6 +33,26 @@ public class MyWorkoutPlanActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_myworkout_plan);
+
+        // Configurar la barra de navegación
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setSelectedItemId(R.id.navigation_workout);
+        
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.navigation_progress) {
+                startActivity(new Intent(this, ProgressActivity.class));
+                finish();
+                return true;
+            } else if (itemId == R.id.navigation_profile) {
+                startActivity(new Intent(this, Profile.class));
+                finish();
+                return true;
+            } else if (itemId == R.id.navigation_workout) {
+                return true;
+            }
+            return false;
+        });
 
         db = FirebaseFirestore.getInstance();
 

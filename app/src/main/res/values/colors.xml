@@ -5,4 +5,6 @@
     <color name="background">#1A1A1A</color>
     <color name="buttons">#303030</color>
     <color name="inputs">#293038</color>
+    <color name="nav_orange">#FF5722</color>
+    <color name="nav_orange_dark">#E64A19</color>
 </resources>

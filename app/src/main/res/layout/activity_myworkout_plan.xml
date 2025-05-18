@@ -1,45 +1,63 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="#111111"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="24dp">
+    android:background="#121212">
 
     <TextView
+        android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Workout Plan"
-        android:textColor="#FFFFFF"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:fontFamily="@font/plus_jakarta_sans"
-        android:layout_marginBottom="16dp" />
+        android:text="Mis Entrenamientos"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:layout_margin="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvWorkoutPlan"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.1" />
+        android:padding="16dp"
+        android:clipToPadding="false"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle"
+        app:layout_constraintBottom_toTopOf="@id/buttonsLayout"/>
 
-    <Button
-        android:id="@+id/btnNewPlan"
+    <LinearLayout
+        android:id="@+id/buttonsLayout"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:text="＋ New Plan"
-        android:layout_marginTop="16dp"
-        android:textColor="#FFFFFF"
-        android:background="@drawable/rounded_button"
-        android:textAllCaps="false"
-        android:fontFamily="@font/plus_jakarta_sans"/>
-    <Button
-        android:id="@+id/btnEditPlan"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="16dp"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation">
+
+        <Button
+            android:id="@+id/btnNewPlan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nuevo Plan"
+            android:layout_marginEnd="16dp"/>
+
+        <Button
+            android:id="@+id/btnEditPlan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Editar Plan"
+            android:layout_marginStart="16dp"/>
+
+    </LinearLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:text="＋ Edit Plan"
-        android:layout_marginTop="16dp"
-        android:textColor="#FFFFFF"
-        android:background="@drawable/rounded_button"
-        android:textAllCaps="false"
-        android:fontFamily="@font/plus_jakarta_sans"/>
-</LinearLayout>
+        android:layout_height="wrap_content"
+        android:background="@color/nav_orange"
+        app:itemIconTint="@color/black"
+        app:itemTextColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/bottom_nav_menu" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

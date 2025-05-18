@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "524139714418",
+    "project_id": "tfgdanimario",
+    "storage_bucket": "tfgdanimario.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:524139714418:android:d2ada3777b171f1c02efeb",
+        "android_client_info": {
+          "package_name": "com.example.tfgdanielmario"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcJnE1kTOo0SQ23NDTxAKNVMdV5hZXyfI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
