@@ -24,32 +24,31 @@ public class LoadEstimator {
     public void estimateLoadsForSession(String sessionId, Consumer<List<ExerciseRecord>> callback) {
         Log.d(TAG, "Iniciando estimación de cargas para sesión: " + sessionId + ", usuario: " + userId);
         
-        // Primero obtener el objetivo del usuario
+        // Primero obtener el tipo de objetivo del usuario
         db.collection("users")
                 .document(userId)
                 .get()
                 .addOnSuccessListener(userDoc -> {
-                    String goal = userDoc.getString("goal");
-                    if (goal == null) {
-                        Log.e(TAG, "Objetivo del usuario no encontrado para userId: " + userId);
+                    String goalType = userDoc.getString("goalType");
+                    if (goalType == null) {
+                        Log.e(TAG, "Tipo de objetivo del usuario no encontrado para userId: " + userId);
                         callback.accept(new ArrayList<>());
                         return;
                     }
-                    Log.d(TAG, "Objetivo del usuario encontrado: " + goal);
+                    Log.d(TAG, "Tipo de objetivo del usuario encontrado: " + goalType);
 
-                    // Calcular factor de ajuste basado en el objetivo
+                    // Calcular factor de ajuste basado en el tipo de objetivo
                     float adjustmentFactor;
-                    String goalLower = goal.toLowerCase();
-                    if (goalLower.equals("gain")) {
+                    if (goalType.equals("GAIN")) {
                         adjustmentFactor = 1.05f;    // Incremento del 5% para ganar masa
-                    } else if (goalLower.equals("maintain")) {
+                    } else if (goalType.equals("MAINTAIN")) {
                         adjustmentFactor = 1.0f;     // Mantener el peso actual
-                    } else if (goalLower.equals("lose")) {
+                    } else if (goalType.equals("LOSE")) {
                         adjustmentFactor = 0.95f;    // Reducción del 5% para pérdida
                     } else {
                         adjustmentFactor = 1.0f;
                     }
-                    Log.d(TAG, String.format("Factor de ajuste calculado: %.2f basado en objetivo: %s", adjustmentFactor, goal));
+                    Log.d(TAG, String.format("Factor de ajuste calculado: %.2f basado en tipo de objetivo: %s", adjustmentFactor, goalType));
 
                     // Luego obtener los ejercicios de la sesión
                     db.collection("trainingSessions")

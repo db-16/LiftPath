@@ -1,11 +1,8 @@
 package com.example.tfgdanielmario;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,13 +13,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private EditText etUsername, etPassword, etWeight, etMail;
-    private Spinner spinnerGoal;
+    private EditText etUsername, etPassword, etWeight, etMail, etGoalWeight;
     private Button btnRegister;
     private FirebaseFirestore db;
     private FirebaseAuth auth;
 
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,13 +30,8 @@ public class RegisterActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.etPassword);
         etWeight = findViewById(R.id.etWeight);
         etMail = findViewById(R.id.etMail);
-        spinnerGoal = findViewById(R.id.spinnerGoal);
+        etGoalWeight = findViewById(R.id.etGoalWeight);
         btnRegister = findViewById(R.id.btnRegister);
-
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.goals_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerGoal.setAdapter(adapter);
 
         btnRegister.setOnClickListener(view -> registerUser());
     }
@@ -50,20 +40,31 @@ public class RegisterActivity extends AppCompatActivity {
         String username = etUsername.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
         String weightStr = etWeight.getText().toString().trim();
-        String goal = spinnerGoal.getSelectedItem().toString();
+        String goalWeightStr = etGoalWeight.getText().toString().trim();
         String mail = etMail.getText().toString().trim();
 
-        if (username.isEmpty() || password.isEmpty() || weightStr.isEmpty() || mail.isEmpty()) {
-            Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+        if (username.isEmpty() || password.isEmpty() || weightStr.isEmpty() || goalWeightStr.isEmpty() || mail.isEmpty()) {
+            Toast.makeText(this, "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        double weight;
+        double weight, goalWeight;
         try {
             weight = Double.parseDouble(weightStr);
+            goalWeight = Double.parseDouble(goalWeightStr);
         } catch (NumberFormatException e) {
-            Toast.makeText(this, "Invalid weight format", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Formato de peso inválido", Toast.LENGTH_SHORT).show();
             return;
+        }
+
+        // Determinar el tipo de objetivo basado en la comparación de pesos
+        String goalType;
+        if (goalWeight > weight) {
+            goalType = "GAIN";
+        } else if (goalWeight < weight) {
+            goalType = "LOSE";
+        } else {
+            goalType = "MAINTAIN";
         }
 
         // Crear usuario en Firebase Authentication
@@ -79,8 +80,9 @@ public class RegisterActivity extends AppCompatActivity {
                             newUser.setId(userId);
                             newUser.setName(username);
                             newUser.setWeight(weight);
-                            newUser.setGoal(goal);
-                            newUser.setGoalWeight(0);
+                            newUser.setCurrentWeight(weight);
+                            newUser.setGoalWeight(goalWeight);
+                            newUser.setGoalType(goalType);
                             newUser.setMail(mail);
                             newUser.setIdRoutine("default");
 
@@ -88,13 +90,15 @@ public class RegisterActivity extends AppCompatActivity {
                                     .document(userId)
                                     .set(newUser)
                                     .addOnSuccessListener(aVoid -> {
-                                        Toast.makeText(RegisterActivity.this, "User registered successfully", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(RegisterActivity.this, "Usuario registrado exitosamente", Toast.LENGTH_SHORT).show();
                                         finish();
                                     })
-                                    .addOnFailureListener(e -> Toast.makeText(RegisterActivity.this, "Registration failed: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+                                    .addOnFailureListener(e -> Toast.makeText(RegisterActivity.this, 
+                                        "Error en el registro: " + e.getMessage(), Toast.LENGTH_SHORT).show());
                         }
                     } else {
-                        Toast.makeText(RegisterActivity.this, "Registration failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this, 
+                            "Error en el registro: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }

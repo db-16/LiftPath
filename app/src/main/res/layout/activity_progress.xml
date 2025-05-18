@@ -5,75 +5,142 @@
     android:layout_height="match_parent"
     android:background="#121212">
 
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Estadísticas"
+        android:textColor="#FFFFFF"
+        android:textSize="28sp"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:textStyle="bold"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="24dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardWeights"
+        android:id="@+id/cardCurrentWeight"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         app:cardBackgroundColor="#293038"
         app:cardCornerRadius="8dp"
         app:cardElevation="2dp"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_marginTop="24dp"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="16dp"
+            android:gravity="center">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Información de Peso"
+                android:text="Peso Actual"
                 android:textColor="#FFFFFF"
                 android:textSize="18sp"
-                android:layout_marginBottom="16dp"
-                android:fontFamily="sans-serif-medium"/>
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:textStyle="bold"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tvCurrentWeight"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="8dp">
+                android:text="0.0 kg"
+                android:textColor="@android:color/white"
+                android:textSize="32sp"
+                android:fontFamily="@font/plus_jakarta_sans"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
-                <TextView
-                    android:id="@+id/tvInitialWeight"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="0.0 kg"
-                    android:textColor="@android:color/white"
-                    android:textSize="16sp"/>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardInitialWeight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:cardBackgroundColor="#293038"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="2dp"
+        app:layout_constraintTop_toBottomOf="@id/cardCurrentWeight">
 
-                <TextView
-                    android:id="@+id/tvCurrentWeight"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="0.0 kg"
-                    android:textColor="@android:color/white"
-                    android:textSize="16sp"
-                    android:gravity="center"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:gravity="center">
 
-                <TextView
-                    android:id="@+id/tvGoalWeight"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Objetivo: 0.0 kg"
-                    android:textColor="@android:color/white"
-                    android:textSize="16sp"
-                    android:gravity="end"/>
-            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Peso Inicial"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tvInitialWeight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0.0 kg"
+                android:textColor="@android:color/white"
+                android:textSize="32sp"
+                android:fontFamily="@font/plus_jakarta_sans"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardGoalWeight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:cardBackgroundColor="#293038"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="2dp"
+        app:layout_constraintTop_toBottomOf="@id/cardInitialWeight">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Peso Objetivo"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tvGoalWeight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0.0 kg"
+                android:textColor="@android:color/white"
+                android:textSize="32sp"
+                android:fontFamily="@font/plus_jakarta_sans"/>
 
             <TextView
                 android:id="@+id/tvProgressPercentage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Progreso: 0%"
-                android:textColor="@android:color/white"
+                android:textColor="#4CAF50"
                 android:textSize="16sp"
-                android:layout_gravity="center"/>
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/plus_jakarta_sans"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
@@ -85,7 +152,7 @@
         app:cardBackgroundColor="#293038"
         app:cardCornerRadius="8dp"
         app:cardElevation="2dp"
-        app:layout_constraintTop_toBottomOf="@id/cardWeights"
+        app:layout_constraintTop_toBottomOf="@id/cardGoalWeight"
         app:layout_constraintBottom_toTopOf="@id/btnUpdateWeight">
 
         <LinearLayout

@@ -7,8 +7,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Spinner;
-import android.widget.ArrayAdapter;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,9 +17,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class Profile extends AppCompatActivity {
 
-    private TextView tvNameAge, tvCurrentWeight, tvGoal;
-    private EditText etNewWeight;
-    private Button btnSaveWeight, btnSettings, btnLogout;
+    private TextView tvNameAge, tvCurrentWeight, tvGoal, tvTrainingCount, tvExerciseCount;
+    private Button btnSettings, btnLogout;
     private String currentUserMail;
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
@@ -61,8 +58,8 @@ public class Profile extends AppCompatActivity {
         tvNameAge = findViewById(R.id.tvNameAge);
         tvCurrentWeight = findViewById(R.id.tvCurrentWeight);
         tvGoal = findViewById(R.id.tvGoal);
-        etNewWeight = findViewById(R.id.etNewWeight);
-        btnSaveWeight = findViewById(R.id.btnSaveWeight);
+        tvTrainingCount = findViewById(R.id.tvTrainingCount);
+        tvExerciseCount = findViewById(R.id.tvExerciseCount);
         btnSettings = findViewById(R.id.btnSettings);
         btnLogout = findViewById(R.id.btnLogout);
 
@@ -70,23 +67,37 @@ public class Profile extends AppCompatActivity {
 
         // Cargar los datos del usuario
         loadUserData();
+        loadTrainingStats();
 
         // Configurar botones
-        btnSaveWeight.setOnClickListener(view -> saveNewWeight());
         btnSettings.setOnClickListener(view -> showSettingsDialog());
         btnLogout.setOnClickListener(view -> logout());
     }
 
     private void loadUserData() {
-        db.collection("users").document(currentUserMail)
+        db.collection("users").document(mAuth.getCurrentUser().getUid())
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
                         User user = documentSnapshot.toObject(User.class);
                         if (user != null) {
                             tvNameAge.setText(user.getName());
-                            tvCurrentWeight.setText("Peso actual: " + user.getWeight() + " kg");
-                            tvGoal.setText("Objetivo: " + user.getGoalWeight() + " kg (" + user.getGoalType() + ")");
+                            tvCurrentWeight.setText(String.format("%.1f kg", user.getCurrentWeight()));
+                            
+                            // Calcular la diferencia con el objetivo
+                            double difference = user.getGoalWeight() - user.getCurrentWeight();
+                            String goalMessage;
+                            if (Math.abs(difference) < 0.1) { // Consideramos objetivo cumplido si la diferencia es menor a 0.1 kg
+                                goalMessage = "¡Objetivo\ncumplido!";
+                                tvGoal.setTextColor(getResources().getColor(R.color.goal_achieved));
+                            } else if (difference > 0) {
+                                goalMessage = String.format("+%.1f kg", difference);
+                                tvGoal.setTextColor(getResources().getColor(R.color.white));
+                            } else {
+                                goalMessage = String.format("%.1f kg", difference);
+                                tvGoal.setTextColor(getResources().getColor(R.color.white));
+                            }
+                            tvGoal.setText(goalMessage);
                         }
                     }
                 })
@@ -95,35 +106,47 @@ public class Profile extends AppCompatActivity {
                 });
     }
 
+    private void loadTrainingStats() {
+        String userId = mAuth.getCurrentUser().getUid();
+        
+        // Contar entrenamientos
+        db.collection("trainingSessions")
+            .whereEqualTo("userId", userId)
+            .get()
+            .addOnSuccessListener(trainingSessions -> {
+                tvTrainingCount.setText(String.valueOf(trainingSessions.size()));
+            })
+            .addOnFailureListener(e -> {
+                tvTrainingCount.setText("0");
+            });
+
+        // Contar ejercicios totales del usuario
+        db.collection("exerciseRecords")
+            .whereEqualTo("userId", userId)
+            .get()
+            .addOnSuccessListener(exerciseRecords -> {
+                tvExerciseCount.setText(String.valueOf(exerciseRecords.size()));
+            })
+            .addOnFailureListener(e -> {
+                tvExerciseCount.setText("0");
+                Toast.makeText(Profile.this, "Error al cargar ejercicios: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            });
+    }
+
     private void showSettingsDialog() {
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_settings, null);
         EditText etCurrentWeight = dialogView.findViewById(R.id.etCurrentWeight);
         EditText etGoalWeight = dialogView.findViewById(R.id.etGoalWeight);
-        Spinner spinnerGoalType = dialogView.findViewById(R.id.spinnerGoalType);
-
-        // Configurar el spinner
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.goal_types, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerGoalType.setAdapter(adapter);
 
         // Cargar datos actuales
-        db.collection("users").document(currentUserMail)
+        db.collection("users").document(mAuth.getCurrentUser().getUid())
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     if (documentSnapshot.exists()) {
                         User user = documentSnapshot.toObject(User.class);
                         if (user != null) {
-                            etCurrentWeight.setText(String.valueOf(user.getWeight()));
+                            etCurrentWeight.setText(String.valueOf(user.getCurrentWeight()));
                             etGoalWeight.setText(String.valueOf(user.getGoalWeight()));
-                            // Establecer la selección del spinner según el tipo de objetivo actual
-                            String[] goalTypes = getResources().getStringArray(R.array.goal_types);
-                            for (int i = 0; i < goalTypes.length; i++) {
-                                if (goalTypes[i].equals(user.getGoalType())) {
-                                    spinnerGoalType.setSelection(i);
-                                    break;
-                                }
-                            }
                         }
                     }
                 });
@@ -135,12 +158,21 @@ public class Profile extends AppCompatActivity {
                     try {
                         double currentWeight = Double.parseDouble(etCurrentWeight.getText().toString());
                         double goalWeight = Double.parseDouble(etGoalWeight.getText().toString());
-                        String goalType = spinnerGoalType.getSelectedItem().toString();
+
+                        // Determinar el tipo de objetivo basado en la comparación de pesos
+                        String goalType;
+                        if (goalWeight > currentWeight) {
+                            goalType = "GAIN";
+                        } else if (goalWeight < currentWeight) {
+                            goalType = "LOSE";
+                        } else {
+                            goalType = "MAINTAIN";
+                        }
 
                         // Actualizar en Firestore
-                        db.collection("users").document(currentUserMail)
+                        db.collection("users").document(mAuth.getCurrentUser().getUid())
                                 .update(
-                                        "weight", currentWeight,
+                                        "currentWeight", currentWeight,
                                         "goalWeight", goalWeight,
                                         "goalType", goalType
                                 )
@@ -172,29 +204,5 @@ public class Profile extends AppCompatActivity {
                 })
                 .setNegativeButton("No", null)
                 .show();
-    }
-
-    private void saveNewWeight() {
-        String newWeightStr = etNewWeight.getText().toString().trim();
-        if (newWeightStr.isEmpty()) {
-            Toast.makeText(this, "Por favor ingresa un peso", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        try {
-            double newWeight = Double.parseDouble(newWeightStr);
-            db.collection("users").document(currentUserMail)
-                    .update("weight", newWeight)
-                    .addOnSuccessListener(aVoid -> {
-                        Toast.makeText(Profile.this, "Peso actualizado", Toast.LENGTH_SHORT).show();
-                        loadUserData();
-                        etNewWeight.setText("");
-                    })
-                    .addOnFailureListener(e -> {
-                        Toast.makeText(Profile.this, "Error al actualizar: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    });
-        } catch (NumberFormatException e) {
-            Toast.makeText(this, "Por favor ingresa un peso válido", Toast.LENGTH_SHORT).show();
-        }
     }
 }

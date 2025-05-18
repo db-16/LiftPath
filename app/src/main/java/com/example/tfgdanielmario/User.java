@@ -4,7 +4,8 @@ public class User {
 
     private String id;          // UID de Firebase Authentication
     private String name;
-    private double weight;
+    private double weight;      // Peso inicial
+    private double currentWeight; // Peso actual
     private double goalWeight;
     private String idRoutine;
     private String mail;
@@ -17,6 +18,7 @@ public class User {
         this.name = name;
         this.mail = email;
         this.weight = weight;
+        this.currentWeight = weight; // Inicialmente el peso actual es igual al peso inicial
         this.goalWeight = goalWeight;
         this.goalType = goalType;
     }
@@ -32,6 +34,10 @@ public class User {
 
     public void setWeight(double weight) {
         this.weight = weight;
+    }
+
+    public void setCurrentWeight(double currentWeight) {
+        this.currentWeight = currentWeight;
     }
 
     public void setGoalWeight(double goalWeight) {
@@ -65,6 +71,10 @@ public class User {
 
     public double getWeight() {
         return weight;
+    }
+
+    public double getCurrentWeight() {
+        return currentWeight;
     }
 
     public double getGoalWeight() {
