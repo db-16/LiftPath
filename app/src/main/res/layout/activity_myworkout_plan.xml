@@ -32,4 +32,14 @@
         android:background="@drawable/rounded_button"
         android:textAllCaps="false"
         android:fontFamily="@font/plus_jakarta_sans"/>
+    <Button
+        android:id="@+id/btnEditPlan"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="＋ Edit Plan"
+        android:layout_marginTop="16dp"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/rounded_button"
+        android:textAllCaps="false"
+        android:fontFamily="@font/plus_jakarta_sans"/>
 </LinearLayout>

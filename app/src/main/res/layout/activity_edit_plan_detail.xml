@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#121212">
+
+    <!-- Nombre de la rutina -->
+    <EditText
+        android:id="@+id/etSessionName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nombre de la rutina"
+        android:textColorHint="#808080"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Lista de ejercicios -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ejercicios"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvExercises"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <!-- Botón Añadir Ejercicio -->
+    <Button
+        android:id="@+id/btnAddExercise"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Añadir Ejercicio"
+        android:drawableStart="@android:drawable/ic_input_add"
+        android:padding="12dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"/>
+
+    <!-- Botones de acción -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp">
+
+        <Button
+            android:id="@+id/btnDeletePlan"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Eliminar Rutina"
+            android:backgroundTint="#FF5252"
+            android:layout_marginEnd="4dp"/>
+
+        <Button
+            android:id="@+id/btnSaveChanges"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Guardar Cambios"
+            android:layout_marginStart="4dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
@@ -27,8 +27,26 @@
 
         <!-- Nueva actividad para el plan de entrenamiento -->
         <activity android:name=".MyWorkoutPlanActivity"
+            android:exported="true" />
+
+        <!-- Actividad para añadir una sesión -->
+        <activity android:name=".AddTrainingSessionActivity"
             android:exported="false" />
 
+        <!-- Actividad para guardar progreso de ejercicio -->
+        <activity android:name=".ExerciseProgressDialogFragment"
+            android:exported="false" />
+
+        <activity android:name=".AddExercise"
+            android:exported="true"/>
+        <activity android:name=".TrainingSessionActivity" />
+        <activity android:name=".EditPlanListActivity" />
+        <activity android:name=".EditPlanDetailActivity" />
+        <activity android:name=".EditExerciseActivity" />
+        
+        <!-- Nueva actividad para el progreso -->
+        <activity android:name=".ProgressActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

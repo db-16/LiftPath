@@ -5,11 +5,20 @@
     android:layout_height="match_parent">
 
     <EditText
+        android:id="@+id/etMail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Mail"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_margin="16dp"/>
+    <EditText
         android:id="@+id/etUsername"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Username"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etMail"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_margin="16dp"/>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Exercise Name"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
+
+    <EditText
+        android:id="@+id/etRepetitions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Repeticiones"
+        android:inputType="number"/>
+
+    <EditText
+        android:id="@+id/etLoad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Peso (kg)"
+        android:inputType="numberDecimal"/>
+</LinearLayout>

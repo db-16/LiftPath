@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -37,6 +38,8 @@ dependencies {
     implementation(libs.lifecycle.viewmodel)
     implementation(libs.room.runtime)
     implementation(libs.gridlayout)
+    implementation(libs.firebase.database)
+    implementation(libs.firebase.firestore)
     annotationProcessor(libs.room.compiler)
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
@@ -50,5 +53,10 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation(platform("com.google.firebase:firebase-bom:33.13.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation (libs.google.firebase.firestore)
+    implementation (libs.firebase.auth)
+
 
 }

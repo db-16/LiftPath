@@ -6,4 +6,5 @@
         <item>gain</item>
         <item>maintain</item>
     </string-array>
+    <string name="titleSession">Enter Name</string>
 </resources>

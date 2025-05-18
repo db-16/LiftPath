@@ -13,40 +13,54 @@
 
         <!-- Título -->
         <TextView
-            android:id="@+id/tvName"
+            android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
+            android:text="Nuevo ejercicio"
             android:textColor="#FFFFFF"
             android:textSize="18sp"
             android:textStyle="bold" />
 
-
-        <!-- Campo Reps -->
+        <!-- Campo Nombre del Ejercicio -->
         <EditText
-            android:id="@+id/etRepetitions"
+            android:id="@+id/etExerciseName"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginBottom="16dp"
             android:background="@drawable/rounded_input"
             android:backgroundTint="@color/inputs"
             android:fontFamily="@font/plus_jakarta_sans"
-            android:hint="Reps"
+            android:hint="Nombre del ejercicio"
+            android:padding="12dp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFF9F9" />
+
+        <!-- Campo Series -->
+        <EditText
+            android:id="@+id/etSets"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/rounded_input"
+            android:backgroundTint="@color/inputs"
+            android:fontFamily="@font/plus_jakarta_sans"
+            android:hint="Número de series"
             android:inputType="number"
             android:padding="12dp"
             android:textColor="#FFFFFF"
             android:textColorHint="#FFFFFF" />
 
-        <!-- Campo Peso -->
+        <!-- Campo Peso Inicial -->
         <EditText
-            android:id="@+id/etLoad"
+            android:id="@+id/etInitialWeight"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginBottom="24dp"
             android:background="@drawable/rounded_button"
             android:backgroundTint="@color/inputs"
             android:fontFamily="@font/plus_jakarta_sans"
-            android:hint="Peso"
+            android:hint="Peso inicial (kg)"
             android:inputType="numberDecimal"
             android:padding="12dp"
             android:textColor="#FFFFFF"
@@ -57,7 +71,7 @@
             android:id="@+id/btnSave"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:text="Guardar y continuar"
+            android:text="Guardar ejercicio"
             android:textColor="#FFFFFF"
             android:background="@drawable/rounded_button"
             android:textAllCaps="false"
