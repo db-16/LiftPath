@@ -6,10 +6,39 @@
     </style>
 
     <style name="Theme.TFGDanielMario" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Colores primarios -->
         <item name="colorPrimary">@color/nav_orange</item>
         <item name="colorPrimaryVariant">@color/nav_orange_dark</item>
-        <item name="colorOnPrimary">@color/black</item>
-        <item name="android:navigationBarColor">@color/nav_orange</item>
+        <item name="colorOnPrimary">@color/white</item>
+        
+        <!-- Colores de la interfaz -->
+        <item name="android:navigationBarColor">@color/black</item>
         <item name="android:statusBarColor">@color/black</item>
+        <item name="android:windowBackground">@color/background</item>
+        
+        <!-- Colores de componentes -->
+        <item name="toolbarStyle">@style/Widget.App.Toolbar</item>
+        <item name="materialButtonStyle">@style/Widget.App.Button</item>
+        <item name="textInputStyle">@style/Widget.App.TextInputLayout</item>
+    </style>
+
+    <!-- Estilo personalizado para la Toolbar -->
+    <style name="Widget.App.Toolbar" parent="Widget.MaterialComponents.Toolbar.Primary">
+        <item name="android:background">@color/nav_orange</item>
+        <item name="titleTextColor">@color/white</item>
+    </style>
+
+    <!-- Estilo personalizado para los botones -->
+    <style name="Widget.App.Button" parent="Widget.MaterialComponents.Button">
+        <item name="backgroundTint">@color/nav_orange</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="cornerRadius">8dp</item>
+    </style>
+
+    <!-- Estilo personalizado para TextInputLayout -->
+    <style name="Widget.App.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/nav_orange</item>
+        <item name="hintTextColor">@color/nav_orange</item>
+        <item name="android:textColorHint">#AAAAAA</item>
     </style>
 </resources>

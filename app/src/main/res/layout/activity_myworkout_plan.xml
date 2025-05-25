@@ -9,7 +9,7 @@
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Mis Entrenamientos"
+        android:text="@string/my_workouts"
         android:textColor="@android:color/white"
         android:textSize="24sp"
         android:layout_margin="16dp"
@@ -38,14 +38,14 @@
             android:id="@+id/btnNewPlan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nuevo Plan"
+            android:text="@string/new_plan"
             android:layout_marginEnd="16dp"/>
 
         <Button
             android:id="@+id/btnEditPlan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Editar Plan"
+            android:text="@string/edit_plan"
             android:layout_marginStart="16dp"/>
 
     </LinearLayout>

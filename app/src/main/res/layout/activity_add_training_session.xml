@@ -4,68 +4,76 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
     android:background="#121212">
 
-    <!-- Input mejorado para el nombre -->
-    <com.google.android.material.textfield.TextInputLayout
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:hint="Nombre de la rutina"
-        app:boxStrokeColor="#FFFFFF"
-        app:hintTextColor="#FFFFFF"
-        android:textColorHint="#AAAAAA"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        android:layout_height="?attr/actionBarSize"
+        android:elevation="4dp" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tvName"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Input mejorado para el nombre -->
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="#FFFFFF"
-            android:inputType="textCapSentences"
-            android:maxLines="1" />
+            android:layout_marginBottom="16dp"
+            android:hint="@string/routine_name">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tvName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#FFFFFF"
+                android:inputType="textCapSentences"
+                android:maxLines="1" />
 
-    <!-- Botón para añadir ejercicio -->
-    <Button
-        android:id="@+id/btnAddExercise"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Añadir Ejercicio"
-        android:textAllCaps="false"
-        android:backgroundTint="#2C2C2E"
-        android:textColor="#FFFFFF"
-        android:drawableStart="@android:drawable/ic_input_add"
-        android:padding="12dp"
-        android:layout_marginBottom="16dp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Lista de ejercicios -->
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <LinearLayout
-            android:id="@+id/exerciseList"
+        <!-- Botón para añadir ejercicio -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAddExercise"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" />
+            android:text="@string/add_exercise_to_plan"
+            android:textAllCaps="false"
+            android:padding="12dp"
+            app:icon="@android:drawable/ic_input_add"
+            app:iconTint="#FFFFFF"
+            android:layout_marginBottom="16dp" />
 
-    </ScrollView>
+        <!-- Lista de ejercicios -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
-    <!-- Botón para guardar la sesión -->
-    <Button
-        android:id="@+id/btnSaveSession"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Guardar Rutina"
-        android:textAllCaps="false"
-        android:backgroundTint="#2C2C2E"
-        android:textColor="#FFFFFF"
-        android:drawableStart="@android:drawable/ic_menu_save"
-        android:padding="12dp"
-        android:layout_marginTop="16dp" />
+            <LinearLayout
+                android:id="@+id/exerciseList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
 
+        </ScrollView>
+
+        <!-- Botón para guardar la sesión -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSaveSession"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/save_training"
+            android:textAllCaps="false"
+            android:backgroundTint="@color/nav_orange"
+            android:padding="12dp"
+            app:cornerRadius="8dp"
+            app:icon="@android:drawable/ic_menu_save"
+            app:iconTint="#FFFFFF"
+            android:layout_marginTop="16dp" />
+
+    </LinearLayout>
 </LinearLayout>

@@ -63,6 +63,10 @@ public class MyWorkoutPlanActivity extends AppCompatActivity {
             Intent intent = new Intent(MyWorkoutPlanActivity.this, TrainingSessionActivity.class);
             intent.putExtra("sessionId", session.getId());
             intent.putExtra("sessionName", session.getName());
+            int currentDay = trainingSessions.indexOf(session) + 1;
+            int totalDays = trainingSessions.size();
+            intent.putExtra("currentDay", currentDay);
+            intent.putExtra("totalDays", totalDays);
             startActivity(intent);
         });
         recyclerView.setAdapter(adapter);

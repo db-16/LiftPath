@@ -3,33 +3,51 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="16dp"
+    android:layout_margin="24dp"
     app:cardBackgroundColor="#293038"
-    app:cardCornerRadius="8dp">
+    app:cardCornerRadius="16dp"
+    app:cardElevation="8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="24dp">
 
-        <TextView
+        <!-- Icono y título -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Actualizar Peso"
-            android:textColor="#FFFFFF"
-            android:textSize="20sp"
-            android:fontFamily="@font/plus_jakarta_sans"
-            android:textStyle="bold"
-            android:layout_marginBottom="16dp"/>
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="24dp">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@android:drawable/ic_menu_edit"
+                app:tint="@color/nav_orange"
+                android:layout_marginEnd="16dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/update_weight"
+                android:textColor="#FFFFFF"
+                android:textSize="24sp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:textStyle="bold"/>
+        </LinearLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Peso (kg)"
+            android:hint="@string/weight"
             android:textColorHint="#AAAAAA"
-            app:boxStrokeColor="#FFFFFF"
-            app:hintTextColor="#FFFFFF"
+            app:boxStrokeColor="@color/nav_orange"
+            app:hintTextColor="@color/nav_orange"
+            app:startIconDrawable="@android:drawable/ic_menu_mylocation"
+            app:startIconTint="@color/nav_orange"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -38,6 +56,8 @@
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
                 android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:padding="16dp"
                 android:fontFamily="@font/plus_jakarta_sans"/>
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -46,27 +66,35 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="24dp">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnCancel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Cancelar"
-                android:backgroundTint="#303030"
+                android:text="@string/cancel"
+                android:textColor="@color/nav_orange"
+                android:backgroundTint="#1A1A1A"
+                android:padding="12dp"
                 android:layout_marginEnd="8dp"
-                android:fontFamily="@font/plus_jakarta_sans"/>
+                android:fontFamily="@font/plus_jakarta_sans"
+                app:cornerRadius="12dp"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                app:strokeColor="@color/nav_orange"/>
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnSave"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Guardar"
-                android:backgroundTint="#303030"
+                android:text="@string/save"
+                android:textColor="#000000"
+                android:backgroundTint="@color/nav_orange"
+                android:padding="12dp"
                 android:layout_marginStart="8dp"
-                android:fontFamily="@font/plus_jakarta_sans"/>
+                android:fontFamily="@font/plus_jakarta_sans"
+                app:cornerRadius="12dp"/>
 
         </LinearLayout>
     </LinearLayout>

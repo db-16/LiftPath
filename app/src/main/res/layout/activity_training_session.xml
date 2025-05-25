@@ -7,75 +7,59 @@
     android:layout_height="match_parent"
     android:background="#121212"
     android:orientation="vertical"
-    android:padding="16dp"
     tools:context=".TrainingSessionActivity">
 
-    <!-- Header -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:elevation="4dp" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:paddingBottom="12dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
 
-        <ImageView
-            android:id="@+id/btnBack"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"
-            app:tint="#FFFFFF" />
-
+        <!-- Day label -->
         <TextView
-            android:layout_width="0dp"
+            android:id="@+id/tvDayInfo"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Training"
+            android:text="@string/day_of_total"
             android:textColor="#FFFFFF"
-            android:textSize="18sp"
+            android:textSize="14sp"
+            android:layout_marginBottom="4dp" />
+
+        <!-- Session name -->
+        <TextView
+            android:id="@+id/tvSessionName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/upper_body"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
             android:textStyle="bold"
-            android:gravity="center" />
-    </LinearLayout>
+            android:layout_marginBottom="12dp" />
 
-    <!-- Day label -->
-    <TextView
-        android:id="@+id/tvDayInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Day 2 of 4"
-        android:textColor="#FFFFFF"
-        android:textSize="14sp"
-        android:layout_marginBottom="4dp" />
+        <!-- RecyclerView for exercises -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvExercises"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
-    <!-- Session name -->
-    <TextView
-        android:id="@+id/tvSessionName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Upper body"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="12dp" />
-
-    <!-- RecyclerView for exercises -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvExercises"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-
-    <!-- Bottom button -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:padding="12dp">
-
-        <Button
+        <!-- Bottom button -->
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSaveTraining"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Guardar Entrenamiento"
-            android:textAllCaps="false" />
+            android:layout_marginTop="8dp"
+            android:text="@string/save_training_session"
+            android:textAllCaps="false"
+            android:padding="12dp"
+            app:cornerRadius="8dp"
+            android:backgroundTint="#2C2C2E" />
+
     </LinearLayout>
 </LinearLayout>

@@ -1,19 +1,22 @@
 package com.example.tfgdanielmario;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
@@ -41,28 +44,34 @@ public class ExerciseProgressDialogFragment extends DialogFragment {
         this.listener = listener;
     }
 
-    @NonNull
     @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setStyle(DialogFragment.STYLE_NO_TITLE, R.style.FullScreenDialog);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (getArguments() != null) {
             exercise = (ExerciseRecord) getArguments().getSerializable(ARG_EXERCISE);
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_save_progress, null);
+        View view = inflater.inflate(R.layout.dialog_save_progress, container, false);
+
+        // Configurar el fondo transparente
+        if (getDialog() != null && getDialog().getWindow() != null) {
+            getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
 
         TextView tvName = view.findViewById(R.id.tvName);
-        EditText etReps = view.findViewById(R.id.etRepetitions);
-        EditText etLoad = view.findViewById(R.id.etLoad);
+        TextInputEditText etReps = view.findViewById(R.id.etRepetitions);
+        TextInputEditText etLoad = view.findViewById(R.id.etLoad);
+        MaterialButton btnSave = view.findViewById(R.id.btnSave);
+        MaterialButton btnCancel = view.findViewById(R.id.btnCancel);
 
         if (exercise != null) {
             tvName.setText(exercise.getExerciseName());
-            
-            // Mostrar el número de serie actual
-            int seriesCompletadas = exercise.getProgress() != null ? exercise.getProgress().size() : 0;
-            int seriesRestantes = exercise.getSets() - seriesCompletadas;
-            String titulo = String.format("Guardar progreso (Serie %d/%d)", 
-                seriesCompletadas + 1, exercise.getSets());
             
             // Pre-llenar con valores actuales o el último progreso
             if (exercise.getProgress() != null && !exercise.getProgress().isEmpty()) {
@@ -74,70 +83,85 @@ public class ExerciseProgressDialogFragment extends DialogFragment {
                 etLoad.setText(String.format("%.1f", exercise.getInitialWeight()));
             }
 
-            builder.setTitle(titulo);
-            if (seriesRestantes <= 0) {
+            // Verificar series completadas
+            int seriesCompletadas = exercise.getProgress() != null ? exercise.getProgress().size() : 0;
+            if (seriesCompletadas >= exercise.getSets()) {
                 Toast.makeText(getContext(), 
                     "Ya has completado todas las series de este ejercicio", 
                     Toast.LENGTH_SHORT).show();
-                return builder.create();
+                dismiss();
             }
         }
 
-        builder.setView(view)
-                .setPositiveButton("Guardar", (dialog, which) -> {
-                    String repsStr = etReps.getText().toString();
-                    String loadStr = etLoad.getText().toString();
+        btnSave.setOnClickListener(v -> {
+            String repsStr = etReps.getText().toString();
+            String loadStr = etLoad.getText().toString();
 
-                    if (repsStr.isEmpty() || loadStr.isEmpty()) {
-                        Toast.makeText(getContext(), "Por favor completa todos los campos", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
+            if (repsStr.isEmpty() || loadStr.isEmpty()) {
+                Toast.makeText(getContext(), "Por favor completa todos los campos", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-                    try {
-                        int reps = Integer.parseInt(repsStr);
-                        double load = Double.parseDouble(loadStr);
+            try {
+                int reps = Integer.parseInt(repsStr);
+                double load = Double.parseDouble(loadStr);
 
-                        if (reps <= 0 || load <= 0) {
-                            Toast.makeText(getContext(), "Los valores deben ser mayores que 0", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
+                if (reps <= 0 || load <= 0) {
+                    Toast.makeText(getContext(), "Los valores deben ser mayores que 0", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
-                        // Verificar si aún quedan series por completar
-                        int seriesCompletadas = exercise.getProgress() != null ? exercise.getProgress().size() : 0;
-                        if (seriesCompletadas >= exercise.getSets()) {
-                            Toast.makeText(getContext(), 
-                                "Ya has completado todas las series de este ejercicio", 
-                                Toast.LENGTH_SHORT).show();
-                            return;
-                        }
+                // Verificar si aún quedan series por completar
+                int seriesCompletadas = exercise.getProgress() != null ? exercise.getProgress().size() : 0;
+                if (seriesCompletadas >= exercise.getSets()) {
+                    Toast.makeText(getContext(), 
+                        "Ya has completado todas las series de este ejercicio", 
+                        Toast.LENGTH_SHORT).show();
+                    dismiss();
+                    return;
+                }
 
-                        // Crear nuevo registro de progreso
-                        ExerciseProgress progress = new ExerciseProgress(
-                            new Date(),
-                            reps,
-                            load
-                        );
+                // Crear nuevo registro de progreso
+                ExerciseProgress progress = new ExerciseProgress(
+                    new Date(),
+                    reps,
+                    load
+                );
 
-                        // Actualizar el ejercicio
-                        if (exercise.getProgress() == null) {
-                            exercise.setProgress(new ArrayList<>());
-                        }
-                        exercise.getProgress().add(progress);
+                // Actualizar el ejercicio
+                if (exercise.getProgress() == null) {
+                    exercise.setProgress(new ArrayList<>());
+                }
+                exercise.getProgress().add(progress);
 
-                        // Actualizar los valores actuales del ejercicio
-                        exercise.setReps(reps);
-                        exercise.setInitialWeight((float)load);
+                // Actualizar los valores actuales del ejercicio
+                exercise.setReps(reps);
+                exercise.setInitialWeight((float)load);
 
-                        if (listener != null) {
-                            listener.onProgressSaved(exercise);
-                        }
+                if (listener != null) {
+                    listener.onProgressSaved(exercise);
+                }
+                dismiss();
 
-                    } catch (NumberFormatException e) {
-                        Toast.makeText(getContext(), "Por favor ingresa valores numéricos válidos", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .setNegativeButton("Cancelar", null);
+            } catch (NumberFormatException e) {
+                Toast.makeText(getContext(), "Por favor ingresa valores numéricos válidos", Toast.LENGTH_SHORT).show();
+            }
+        });
 
-        return builder.create();
+        btnCancel.setOnClickListener(v -> dismiss());
+
+        return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Dialog dialog = getDialog();
+        if (dialog != null) {
+            dialog.getWindow().setLayout(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            );
+        }
     }
 }

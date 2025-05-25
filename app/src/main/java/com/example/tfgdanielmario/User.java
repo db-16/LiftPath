@@ -1,5 +1,7 @@
 package com.example.tfgdanielmario;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 public class User {
 
     private String id;          // UID de Firebase Authentication
@@ -11,6 +13,10 @@ public class User {
     private String mail;
     private String goal; // objetivo como texto
     private String goalType; // "GAIN", "LOSE", "MAINTAIN"
+    private int height; // altura en cm
+    private String gender; // "MALE" o "FEMALE"
+    private int age; // edad en años
+    private int dailyCalories; // calorías diarias necesarias
 
     public User() {}
 
@@ -60,6 +66,23 @@ public class User {
         this.goalType = goalType;
     }
 
+    // Nuevos setters
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public void setDailyCalories(int dailyCalories) {
+        this.dailyCalories = dailyCalories;
+    }
+
     // Getters
     public String getId() {
         return id;
@@ -95,5 +118,84 @@ public class User {
 
     public String getGoalType() {
         return goalType;
+    }
+
+    // Nuevos getters
+    public int getHeight() {
+        return height;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public int getDailyCalories() {
+        return dailyCalories;
+    }
+
+    // Método para calcular las calorías diarias
+    public void calculateDailyCalories() {
+        // Calcular TMB (Tasa Metabólica Basal) usando la fórmula de Mifflin-St Jeor
+        double tmb;
+        if ("MALE".equals(gender)) {
+            tmb = (10 * currentWeight) + (6.25 * height) - (5 * age) + 5;
+        } else {
+            tmb = (10 * currentWeight) + (6.25 * height) - (5 * age) - 161;
+        }
+
+        // Obtener el factor de actividad basado en el número de entrenamientos semanales
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("trainingSessions")
+                .whereEqualTo("userId", id)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    int numTrainings = queryDocumentSnapshots.size();
+                    
+                    // Factor de actividad basado en el número de entrenamientos
+                    double activityFactor;
+                    if (numTrainings <= 1) {
+                        activityFactor = 1.2; // Sedentario
+                    } else if (numTrainings <= 3) {
+                        activityFactor = 1.375; // Actividad ligera
+                    } else if (numTrainings <= 5) {
+                        activityFactor = 1.55; // Actividad moderada
+                    } else {
+                        activityFactor = 1.725; // Actividad intensa
+                    }
+
+                    // Calcular calorías totales con el factor de actividad
+                    double totalCalories = tmb * activityFactor;
+
+                    // Ajustar según el objetivo
+                    if ("LOSE".equals(goalType)) {
+                        totalCalories -= 500; // Déficit para pérdida de peso
+                    } else if ("GAIN".equals(goalType)) {
+                        totalCalories += 500; // Superávit para ganancia de peso
+                    }
+
+                    this.dailyCalories = (int) Math.round(totalCalories);
+
+                    // Actualizar el valor en Firestore
+                    db.collection("users")
+                            .document(id)
+                            .update("dailyCalories", this.dailyCalories);
+                })
+                .addOnFailureListener(e -> {
+                    // En caso de error, usar un valor por defecto conservador
+                    double defaultActivityFactor = 1.375;
+                    double totalCalories = tmb * defaultActivityFactor;
+                    
+                    if ("LOSE".equals(goalType)) {
+                        totalCalories -= 500;
+                    } else if ("GAIN".equals(goalType)) {
+                        totalCalories += 500;
+                    }
+
+                    this.dailyCalories = (int) Math.round(totalCalories);
+                });
     }
 }

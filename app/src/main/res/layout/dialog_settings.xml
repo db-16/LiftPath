@@ -1,34 +1,170 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_margin="24dp"
+    app:cardBackgroundColor="#293038"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="8dp">
 
-    <com.google.android.material.textfield.TextInputLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp">
+        android:orientation="vertical"
+        android:padding="24dp">
 
-        <EditText
-            android:id="@+id/etCurrentWeight"
+        <!-- Icono y título -->
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Peso actual"
-            android:inputType="numberDecimal"/>
-    </com.google.android.material.textfield.TextInputLayout>
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="24dp">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp">
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@android:drawable/ic_menu_manage"
+                app:tint="@color/nav_orange"
+                android:layout_marginEnd="16dp"/>
 
-        <EditText
-            android:id="@+id/etGoalWeight"
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/settings"
+                android:textColor="#FFFFFF"
+                android:textSize="24sp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Peso objetivo"
-            android:inputType="numberDecimal"/>
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginBottom="16dp"
+            android:hint="@string/current_weight"
+            android:textColorHint="#AAAAAA"
+            app:boxStrokeColor="@color/nav_orange"
+            app:hintTextColor="@color/nav_orange"
+            app:startIconDrawable="@android:drawable/ic_menu_mylocation"
+            app:startIconTint="@color/nav_orange"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-</LinearLayout> 
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etCurrentWeight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:padding="16dp"
+                android:fontFamily="@font/plus_jakarta_sans"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:hint="@string/goal_weight"
+            android:textColorHint="#AAAAAA"
+            app:boxStrokeColor="@color/nav_orange"
+            app:hintTextColor="@color/nav_orange"
+            app:startIconDrawable="@android:drawable/ic_menu_myplaces"
+            app:startIconTint="@color/nav_orange"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etGoalWeight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:padding="16dp"
+                android:fontFamily="@font/plus_jakarta_sans"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:hint="@string/height"
+            android:textColorHint="#AAAAAA"
+            app:boxStrokeColor="@color/nav_orange"
+            app:hintTextColor="@color/nav_orange"
+            app:startIconDrawable="@android:drawable/ic_menu_sort_by_size"
+            app:startIconTint="@color/nav_orange"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etHeight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:padding="16dp"
+                android:fontFamily="@font/plus_jakarta_sans"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:hint="@string/age"
+            android:textColorHint="#AAAAAA"
+            app:boxStrokeColor="@color/nav_orange"
+            app:hintTextColor="@color/nav_orange"
+            app:startIconDrawable="@android:drawable/ic_menu_today"
+            app:startIconTint="@color/nav_orange"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etAge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:padding="16dp"
+                android:fontFamily="@font/plus_jakarta_sans"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Botones -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCancel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/cancel"
+                android:textColor="@color/nav_orange"
+                android:backgroundTint="#1A1A1A"
+                android:padding="12dp"
+                android:layout_marginEnd="8dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                app:cornerRadius="12dp"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                app:strokeColor="@color/nav_orange"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSave"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/save"
+                android:textColor="#000000"
+                android:backgroundTint="@color/nav_orange"
+                android:padding="12dp"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/plus_jakarta_sans"
+                app:cornerRadius="12dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView> 

@@ -40,10 +40,12 @@ public class TrainingSessionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_training_session);
 
-        // Habilitar el botón de retroceso en la ActionBar
+        // Configurar Toolbar
+        androidx.appcompat.widget.Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle("Entrenamiento");
+            getSupportActionBar().setTitle(R.string.training);
         }
 
         rvExercises = findViewById(R.id.rvExercises);
@@ -62,6 +64,8 @@ public class TrainingSessionActivity extends AppCompatActivity {
         // Obtener sessionId y nombre de la sesión
         sessionId = getIntent().getStringExtra("sessionId");
         String sessionName = getIntent().getStringExtra("sessionName");
+        int currentDay = getIntent().getIntExtra("currentDay", 1);
+        int totalDays = getIntent().getIntExtra("totalDays", 1);
         
         if (sessionId == null) {
             Toast.makeText(this, "Error: ID de sesión no disponible", Toast.LENGTH_SHORT).show();
@@ -71,9 +75,11 @@ public class TrainingSessionActivity extends AppCompatActivity {
 
         // Establecer el nombre de la sesión en el título
         TextView tvSessionName = findViewById(R.id.tvSessionName);
+        TextView tvDayInfo = findViewById(R.id.tvDayInfo);
         if (sessionName != null) {
             tvSessionName.setText(sessionName);
         }
+        tvDayInfo.setText(getString(R.string.day_of_total, currentDay, totalDays));
 
         loadEstimator = new LoadEstimator(this, userId);
 

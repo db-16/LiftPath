@@ -57,38 +57,29 @@ public class ExerciseProgressAdapter extends RecyclerView.Adapter<ExerciseProgre
         }
 
         public void bind(ExerciseRecord exercise, OnExerciseClickListener listener) {
+            // Nombre del ejercicio
             tvExerciseName.setText(exercise.getExerciseName());
             
-            // Mostrar series completadas vs totales
-            int completedSets = exercise.getProgress() != null ? exercise.getProgress().size() : 0;
-            tvSetsReps.setText(String.format("%d/%d series x %d reps", 
-                completedSets, 
-                exercise.getSets(), 
+            // Series y repeticiones con progreso
+            tvSetsReps.setText(itemView.getContext().getString(R.string.sets_reps_format,
+                (exercise.getProgress() != null ? exercise.getProgress().size() : 0),
+                exercise.getSets(),
                 exercise.getReps()));
             
-            // Mostrar peso actual y progreso
+            // Peso actual/último peso usado
             if (exercise.getProgress() != null && !exercise.getProgress().isEmpty()) {
-                // Encontrar el peso más alto
-                double maxWeight = exercise.getProgress().get(0).getWeight();
-                for (ExerciseProgress prog : exercise.getProgress()) {
-                    if (prog.getWeight() > maxWeight) {
-                        maxWeight = prog.getWeight();
-                    }
-                }
-                tvCurrentWeight.setText(String.format("Último peso más alto: %.1f kg", maxWeight));
-                
-                // Si todas las series están completas, mostrar mensaje
-                if (completedSets >= exercise.getSets()) {
-                    tvCurrentWeight.append(" ✓ Ejercicio completado");
-                }
+                double lastWeight = exercise.getProgress().get(exercise.getProgress().size() - 1).getWeight();
+                tvCurrentWeight.setText(itemView.getContext().getString(R.string.last_weight, lastWeight));
+                tvCurrentWeight.setVisibility(View.VISIBLE);
             } else {
-                tvCurrentWeight.setText(String.format("Último peso: %.1f kg", exercise.getInitialWeight()));
+                tvCurrentWeight.setText(itemView.getContext().getString(R.string.last_weight, exercise.getInitialWeight()));
+                tvCurrentWeight.setVisibility(View.VISIBLE);
             }
             
-            // Mostrar peso estimado si está disponible
-            if (exercise.getEstimatedWeight() > 0 && completedSets < exercise.getSets()) {
+            // Peso estimado
+            if (exercise.getEstimatedWeight() > 0) {
+                tvEstimatedWeight.setText(itemView.getContext().getString(R.string.suggested_weight, exercise.getEstimatedWeight()));
                 tvEstimatedWeight.setVisibility(View.VISIBLE);
-                tvEstimatedWeight.setText(String.format("Peso sugerido: %.1f kg", exercise.getEstimatedWeight()));
             } else {
                 tvEstimatedWeight.setVisibility(View.GONE);
             }

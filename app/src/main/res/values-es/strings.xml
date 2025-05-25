@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FitnessApp</string>
+    
+    <!-- Registro y Login -->
+    <string name="create_account">Crear Cuenta</string>
+    <string name="email">Correo electrónico</string>
+    <string name="username">Nombre de usuario</string>
+    <string name="password">Contraseña</string>
+    <string name="initial_weight">Peso inicial (kg)</string>
+    <string name="goal_weight">Peso objetivo (kg)</string>
+    <string name="height">Altura (cm)</string>
+    <string name="age">Edad</string>
+    <string name="male">Hombre</string>
+    <string name="female">Mujer</string>
+    <string name="register_button">Crear Cuenta</string>
+    <string name="login">Iniciar Sesión</string>
+    <string name="login_button">Iniciar Sesión</string>
+    <string name="register_redirect">¿No tienes cuenta? Regístrate</string>
+    
+    <!-- Perfil -->
+    <string name="settings">Ajustes</string>
+    <string name="current_weight">Peso actual</string>
+    <string name="goal_achieved">¡Objetivo\ncumplido!</string>
+    <string name="calories_per_day">%d kcal/día</string>
+    <string name="name_age">%s, %d años</string>
+    <string name="weight_format">%.1f kg</string>
+    <string name="weight_difference_positive">+%.1f kg</string>
+    <string name="weight_difference_negative">%.1f kg</string>
+    <string name="personal_info">Información Personal</string>
+    <string name="name">Nombre</string>
+    <string name="occupation">Ocupación</string>
+    <string name="location">Ubicación</string>
+    <string name="current_weight_label">Peso Actual</string>
+    <string name="goal_status">Estado del Objetivo</string>
+    <string name="trainings">Entrenamientos</string>
+    <string name="exercises">Ejercicios</string>
+    <string name="zero">0</string>
+    <string name="zero_kg">0.0 kg</string>
+    <string name="minus_kg">-0.0 kg</string>
+    
+    <!-- Ejercicio -->
+    <string name="add_exercise">Añadir Ejercicio</string>
+    <string name="exercise_name">Nombre del Ejercicio</string>
+    <string name="sets">Series</string>
+    <string name="reps">Repeticiones</string>
+    <string name="weight">Peso (kg)</string>
+    <string name="save_exercise">Guardar Ejercicio</string>
+    <string name="delete_exercise">Eliminar Ejercicio</string>
+    
+    <!-- Entrenamiento -->
+    <string name="add_training">Añadir Entrenamiento</string>
+    <string name="training_name">Nombre del Entrenamiento</string>
+    <string name="save_training">Guardar Entrenamiento</string>
+    <string name="delete_training">Eliminar Entrenamiento</string>
+    <string name="training_history">Historial de Entrenamientos</string>
+    
+    <!-- Progreso -->
+    <string name="progress">Progreso</string>
+    <string name="weight_progress">Progreso de Peso</string>
+    <string name="update_weight">Actualizar Peso</string>
+    <string name="save_progress">Guardar Progreso</string>
+    <string name="statistics">Estadísticas</string>
+    <string name="current_weight_title">Peso Actual</string>
+    <string name="initial_weight_title">Peso Inicial</string>
+    <string name="goal_weight_title">Peso Objetivo</string>
+    <string name="progress_percentage">Progreso: %d%%</string>
+    <string name="weekly_progress">Progreso Semanal</string>
+    
+    <!-- Mensajes -->
+    <string name="fill_all_fields">Por favor, completa todos los campos</string>
+    <string name="invalid_number_format">Por favor, ingresa valores numéricos válidos</string>
+    <string name="registration_success">Usuario registrado exitosamente</string>
+    <string name="registration_error">Error en el registro: %s</string>
+    <string name="loading_error">Error al cargar datos: %s</string>
+    <string name="settings_updated">Ajustes actualizados</string>
+    <string name="update_error">Error al actualizar: %s</string>
+    <string name="exercise_added">Ejercicio añadido exitosamente</string>
+    <string name="exercise_deleted">Ejercicio eliminado exitosamente</string>
+    <string name="training_saved">Entrenamiento guardado exitosamente</string>
+    <string name="training_deleted">Entrenamiento eliminado exitosamente</string>
+    <string name="progress_saved">Progreso guardado exitosamente</string>
+    <string name="weight_updated">Peso actualizado exitosamente</string>
+    
+    <!-- Botones -->
+    <string name="save">Guardar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="logout">Cerrar Sesión</string>
+    <string name="edit">Editar</string>
+    <string name="delete">Eliminar</string>
+
+    <!-- Planes de Entrenamiento -->
+    <string name="my_workouts">Mis Entrenamientos</string>
+    <string name="new_plan">Nuevo Plan</string>
+    <string name="edit_plan">Editar Plan</string>
+    <string name="routine_name">Nombre de la rutina</string>
+    <string name="exercises_title">Ejercicios</string>
+    <string name="add_exercise_to_plan">Añadir Ejercicio</string>
+    <string name="delete_routine">Eliminar Rutina</string>
+    <string name="save_changes">Guardar Cambios</string>
+    <string name="training">Entrenamiento</string>
+    <string name="day_of_total">Día %1$d de %2$d</string>
+    <string name="upper_body">Tren superior</string>
+    <string name="save_training_session">Guardar Entrenamiento</string>
+    
+    <!-- Arrays -->
+    <string-array name="goals_array">
+        <item>perder</item>
+        <item>ganar</item>
+        <item>mantener</item>
+    </string-array>
+    
+    <!-- Otros -->
+    <string name="titleSession">Ingrese Nombre</string>
+
+    <!-- Exercise Progress -->
+    <string name="last_weight">Último peso: %1$.1f kg</string>
+    <string name="suggested_weight">Peso sugerido: %1$.1f kg</string>
+    <string name="sets_reps_format">%1$d/%2$d series x %3$d reps</string>
+
+    <!-- Training -->
+    <string name="exercise_item_title">%1$s - Último peso: %2$.1f kg</string>
+    <string name="exercise_item_subtitle">%1$d series x %2$d reps - Peso sugerido: %3$.1f kg</string>
+</resources> 

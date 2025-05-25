@@ -4,32 +4,30 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.WriteBatch;
 
+import android.widget.LinearLayout;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AddTrainingSessionActivity extends AppCompatActivity {
 
     private static final String TAG = "AddTrainingSession";
-    private static final int ADD_EXERCISE_REQUEST_CODE = 1001;
 
-    private EditText etSessionName;
-    private Button btnAddExercise;
-    private Button btnSaveSession;
+    private TextInputEditText etSessionName;
+    private MaterialButton btnAddExercise;
+    private MaterialButton btnSaveSession;
     private LinearLayout layoutExercises;
     private List<ExerciseRecord> exercises;
     private FirebaseFirestore db;
@@ -39,10 +37,12 @@ public class AddTrainingSessionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_training_session);
 
-        // Habilitar el botón de retroceso
+        // Configurar Toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle("Nueva Rutina");
+            getSupportActionBar().setTitle(R.string.add_training);
         }
 
         // Inicializar vistas
@@ -56,29 +56,21 @@ public class AddTrainingSessionActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
         // Configurar botones
-        btnAddExercise.setOnClickListener(v -> {
-            Intent intent = new Intent(this, AddExercise.class);
-            startActivityForResult(intent, ADD_EXERCISE_REQUEST_CODE);
-        });
-
+        btnAddExercise.setOnClickListener(v -> showAddExerciseDialog());
         btnSaveSession.setOnClickListener(v -> saveSession());
 
         // Actualizar UI
         updateUI();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        
-        if (requestCode == ADD_EXERCISE_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
-            ExerciseRecord exercise = (ExerciseRecord) data.getSerializableExtra("exercise");
-            if (exercise != null) {
-                exercises.add(exercise);
-                updateUI();
-                Toast.makeText(this, "Ejercicio añadido", Toast.LENGTH_SHORT).show();
-            }
-        }
+    private void showAddExerciseDialog() {
+        AddExerciseDialogFragment dialog = new AddExerciseDialogFragment();
+        dialog.setOnExerciseAddedListener(exercise -> {
+            exercises.add(exercise);
+            updateUI();
+            Toast.makeText(this, getString(R.string.exercise_added), Toast.LENGTH_SHORT).show();
+        });
+        dialog.show(getSupportFragmentManager(), "AddExerciseDialog");
     }
 
     private void updateUI() {
@@ -87,35 +79,22 @@ public class AddTrainingSessionActivity extends AppCompatActivity {
 
         // Actualizar lista de ejercicios
         layoutExercises.removeAllViews();
-        for (int i = 0; i < exercises.size(); i++) {
-            ExerciseRecord exercise = exercises.get(i);
-            View exerciseView = getLayoutInflater().inflate(R.layout.item_exercise, layoutExercises, false);
-
-            TextView tvName = exerciseView.findViewById(R.id.tvNameExersice);
-            View btnDelete = exerciseView.findViewById(R.id.ivDelete);
-
-            String displayText = String.format("%d. %s - %d series (%.1f kg)", 
-                i + 1, 
-                exercise.getExerciseName(), 
-                exercise.getSets(), 
-                exercise.getInitialWeight());
-            tvName.setText(displayText);
-
-            final int position = i;
-            btnDelete.setOnClickListener(v -> {
-                exercises.remove(position);
+        for (ExerciseRecord exercise : exercises) {
+            ExerciseItemView itemView = new ExerciseItemView(this);
+            itemView.setExercise(exercise);
+            itemView.setOnDeleteClickListener(() -> {
+                exercises.remove(exercise);
                 updateUI();
-                Toast.makeText(this, "Ejercicio eliminado", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.exercise_deleted), Toast.LENGTH_SHORT).show();
             });
-
-            layoutExercises.addView(exerciseView);
+            layoutExercises.addView(itemView);
         }
     }
 
     private void saveSession() {
         String sessionName = etSessionName.getText().toString().trim();
         if (sessionName.isEmpty()) {
-            etSessionName.setError("Ingresa un nombre para la rutina");
+            etSessionName.setError(getString(R.string.fill_all_fields));
             return;
         }
 
@@ -157,13 +136,12 @@ public class AddTrainingSessionActivity extends AppCompatActivity {
                     // Ejecutar batch
                     batch.commit()
                         .addOnSuccessListener(aVoid -> {
-                            Toast.makeText(this, "Rutina guardada correctamente", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, getString(R.string.training_saved), Toast.LENGTH_SHORT).show();
                             
-                            // Devolver resultado
-                            Intent resultIntent = new Intent();
-                            resultIntent.putExtra("sessionId", sessionId);
-                            resultIntent.putExtra("sessionName", sessionName);
-                            setResult(RESULT_OK, resultIntent);
+                            // Volver a MyWorkoutPlanActivity
+                            Intent intent = new Intent(this, MyWorkoutPlanActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
                             finish();
                         })
                         .addOnFailureListener(e -> {
@@ -182,7 +160,7 @@ public class AddTrainingSessionActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
             return true;
@@ -193,19 +171,22 @@ public class AddTrainingSessionActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (!exercises.isEmpty()) {
-            // Mostrar diálogo de confirmación si hay ejercicios
             new androidx.appcompat.app.AlertDialog.Builder(this)
                 .setTitle("¿Descartar cambios?")
                 .setMessage("Tienes ejercicios sin guardar. ¿Deseas descartarlos?")
                 .setPositiveButton("Descartar", (dialog, which) -> {
-                    setResult(RESULT_CANCELED);
-                    super.onBackPressed();
+                    Intent intent = new Intent(this, MyWorkoutPlanActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
                 })
                 .setNegativeButton("Cancelar", null)
                 .show();
         } else {
-            setResult(RESULT_CANCELED);
-            super.onBackPressed();
+            Intent intent = new Intent(this, MyWorkoutPlanActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         }
     }
 }

@@ -17,7 +17,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class Profile extends AppCompatActivity {
 
-    private TextView tvNameAge, tvCurrentWeight, tvGoal, tvTrainingCount, tvExerciseCount;
+    private TextView tvNameAge, tvCurrentWeight, tvGoal, tvTrainingCount, tvDailyCalories;
     private Button btnSettings, btnLogout;
     private String currentUserMail;
     private FirebaseFirestore db;
@@ -59,7 +59,7 @@ public class Profile extends AppCompatActivity {
         tvCurrentWeight = findViewById(R.id.tvCurrentWeight);
         tvGoal = findViewById(R.id.tvGoal);
         tvTrainingCount = findViewById(R.id.tvTrainingCount);
-        tvExerciseCount = findViewById(R.id.tvExerciseCount);
+        tvDailyCalories = findViewById(R.id.tvExerciseCount);
         btnSettings = findViewById(R.id.btnSettings);
         btnLogout = findViewById(R.id.btnLogout);
 
@@ -81,28 +81,31 @@ public class Profile extends AppCompatActivity {
                     if (documentSnapshot.exists()) {
                         User user = documentSnapshot.toObject(User.class);
                         if (user != null) {
-                            tvNameAge.setText(user.getName());
-                            tvCurrentWeight.setText(String.format("%.1f kg", user.getCurrentWeight()));
+                            tvNameAge.setText(getString(R.string.name_age, user.getName(), user.getAge()));
+                            tvCurrentWeight.setText(getString(R.string.weight_format, user.getCurrentWeight()));
                             
                             // Calcular la diferencia con el objetivo
                             double difference = user.getGoalWeight() - user.getCurrentWeight();
                             String goalMessage;
                             if (Math.abs(difference) < 0.1) { // Consideramos objetivo cumplido si la diferencia es menor a 0.1 kg
-                                goalMessage = "¡Objetivo\ncumplido!";
+                                goalMessage = getString(R.string.goal_achieved);
                                 tvGoal.setTextColor(getResources().getColor(R.color.goal_achieved));
                             } else if (difference > 0) {
-                                goalMessage = String.format("+%.1f kg", difference);
+                                goalMessage = getString(R.string.weight_difference_positive, difference);
                                 tvGoal.setTextColor(getResources().getColor(R.color.white));
                             } else {
-                                goalMessage = String.format("%.1f kg", difference);
+                                goalMessage = getString(R.string.weight_difference_negative, difference);
                                 tvGoal.setTextColor(getResources().getColor(R.color.white));
                             }
                             tvGoal.setText(goalMessage);
+
+                            // Mostrar calorías diarias
+                            tvDailyCalories.setText(getString(R.string.calories_per_day, user.getDailyCalories()));
                         }
                     }
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(Profile.this, "Error al cargar datos: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Profile.this, getString(R.string.loading_error, e.getMessage()), Toast.LENGTH_SHORT).show();
                 });
     }
 
@@ -119,90 +122,21 @@ public class Profile extends AppCompatActivity {
             .addOnFailureListener(e -> {
                 tvTrainingCount.setText("0");
             });
-
-        // Contar ejercicios totales del usuario
-        db.collection("exerciseRecords")
-            .whereEqualTo("userId", userId)
-            .get()
-            .addOnSuccessListener(exerciseRecords -> {
-                tvExerciseCount.setText(String.valueOf(exerciseRecords.size()));
-            })
-            .addOnFailureListener(e -> {
-                tvExerciseCount.setText("0");
-                Toast.makeText(Profile.this, "Error al cargar ejercicios: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            });
     }
 
     private void showSettingsDialog() {
-        View dialogView = getLayoutInflater().inflate(R.layout.dialog_settings, null);
-        EditText etCurrentWeight = dialogView.findViewById(R.id.etCurrentWeight);
-        EditText etGoalWeight = dialogView.findViewById(R.id.etGoalWeight);
-
-        // Cargar datos actuales
-        db.collection("users").document(mAuth.getCurrentUser().getUid())
-                .get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        User user = documentSnapshot.toObject(User.class);
-                        if (user != null) {
-                            etCurrentWeight.setText(String.valueOf(user.getCurrentWeight()));
-                            etGoalWeight.setText(String.valueOf(user.getGoalWeight()));
-                        }
-                    }
-                });
-
-        new MaterialAlertDialogBuilder(this)
-                .setTitle("Ajustes")
-                .setView(dialogView)
-                .setPositiveButton("Guardar", (dialog, which) -> {
-                    try {
-                        double currentWeight = Double.parseDouble(etCurrentWeight.getText().toString());
-                        double goalWeight = Double.parseDouble(etGoalWeight.getText().toString());
-
-                        // Determinar el tipo de objetivo basado en la comparación de pesos
-                        String goalType;
-                        if (goalWeight > currentWeight) {
-                            goalType = "GAIN";
-                        } else if (goalWeight < currentWeight) {
-                            goalType = "LOSE";
-                        } else {
-                            goalType = "MAINTAIN";
-                        }
-
-                        // Actualizar en Firestore
-                        db.collection("users").document(mAuth.getCurrentUser().getUid())
-                                .update(
-                                        "currentWeight", currentWeight,
-                                        "goalWeight", goalWeight,
-                                        "goalType", goalType
-                                )
-                                .addOnSuccessListener(aVoid -> {
-                                    Toast.makeText(Profile.this, "Ajustes actualizados", Toast.LENGTH_SHORT).show();
-                                    loadUserData();
-                                })
-                                .addOnFailureListener(e -> {
-                                    Toast.makeText(Profile.this, "Error al actualizar: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                });
-                    } catch (NumberFormatException e) {
-                        Toast.makeText(Profile.this, "Por favor, ingresa valores válidos", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .setNegativeButton("Cancelar", null)
-                .show();
+        SettingsDialogFragment dialog = SettingsDialogFragment.newInstance();
+        dialog.setOnSettingsSavedListener(() -> {
+            loadUserData();
+            loadTrainingStats();
+        });
+        dialog.show(getSupportFragmentManager(), "settings");
     }
 
     private void logout() {
-        new MaterialAlertDialogBuilder(this)
-                .setTitle("Cerrar Sesión")
-                .setMessage("¿Estás seguro de que quieres cerrar sesión?")
-                .setPositiveButton("Sí", (dialog, which) -> {
-                    mAuth.signOut();
-                    Intent intent = new Intent(Profile.this, LoginActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    finish();
-                })
-                .setNegativeButton("No", null)
-                .show();
+        mAuth.signOut();
+        Intent intent = new Intent(Profile.this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 }

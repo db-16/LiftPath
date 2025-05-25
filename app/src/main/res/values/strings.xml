@@ -1,10 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">FitnessApp</string>
+    
+    <!-- Registro y Login -->
+    <string name="create_account">Create Account</string>
+    <string name="email">Email</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="initial_weight">Initial weight (kg)</string>
+    <string name="goal_weight">Goal weight (kg)</string>
+    <string name="height">Height (cm)</string>
+    <string name="age">Age</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="register_button">Create Account</string>
+    <string name="login">Login</string>
+    <string name="login_button">Login</string>
+    <string name="register_redirect">Don\'t have an account? Register</string>
+    
+    <!-- Perfil -->
+    <string name="settings">Settings</string>
+    <string name="current_weight">Current weight</string>
+    <string name="goal_achieved">Goal\nachieved!</string>
+    <string name="calories_per_day">%d kcal/day</string>
+    <string name="name_age">%s, %d years</string>
+    <string name="weight_format">%.1f kg</string>
+    <string name="weight_difference_positive">+%.1f kg</string>
+    <string name="weight_difference_negative">%.1f kg</string>
+    <string name="personal_info">Personal Information</string>
+    <string name="name">Name</string>
+    <string name="occupation">Occupation</string>
+    <string name="location">Location</string>
+    <string name="current_weight_label">Current Weight</string>
+    <string name="goal_status">Goal Status</string>
+    <string name="trainings">Trainings</string>
+    <string name="exercises">Exercises</string>
+    <string name="zero">0</string>
+    <string name="zero_kg">0.0 kg</string>
+    <string name="minus_kg">-0.0 kg</string>
+    
+    <!-- Mensajes -->
+    <string name="fill_all_fields">Please fill in all fields</string>
+    <string name="invalid_number_format">Please enter valid numeric values</string>
+    <string name="registration_success">User registered successfully</string>
+    <string name="registration_error">Registration error: %s</string>
+    <string name="loading_error">Error loading data: %s</string>
+    <string name="settings_updated">Settings updated</string>
+    <string name="update_error">Update error: %s</string>
+    <string name="exercise_added">Exercise added successfully</string>
+    <string name="exercise_deleted">Exercise deleted successfully</string>
+    <string name="training_saved">Training saved successfully</string>
+    <string name="training_deleted">Training deleted successfully</string>
+    <string name="progress_saved">Progress saved successfully</string>
+    <string name="weight_updated">Weight updated successfully</string>
+    
+    <!-- Botones -->
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="logout">Logout</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+
+    <!-- Arrays -->
     <string-array name="goals_array">
         <item>lose</item>
         <item>gain</item>
         <item>maintain</item>
     </string-array>
+    
+    <!-- Otros -->
     <string name="titleSession">Enter Name</string>
+
+    <!-- Progress -->
+    <string name="progress">Progress</string>
+    <string name="weight_progress">Weight Progress</string>
+    <string name="update_weight">Update Weight</string>
+    <string name="save_progress">Save Progress</string>
+    <string name="statistics">Statistics</string>
+    <string name="current_weight_title">Current Weight</string>
+    <string name="initial_weight_title">Initial Weight</string>
+    <string name="goal_weight_title">Goal Weight</string>
+    <string name="progress_percentage">Progress: %d%%</string>
+    <string name="weekly_progress">Weekly Progress</string>
+
+    <!-- Exercise -->
+    <string name="add_exercise">Add Exercise</string>
+    <string name="exercise_name">Exercise Name</string>
+    <string name="sets">Sets</string>
+    <string name="reps">Reps</string>
+    <string name="weight">Weight</string>
+    <string name="save_exercise">Save Exercise</string>
+    <string name="delete_exercise">Delete Exercise</string>
+    
+    <!-- Training -->
+    <string name="add_training">Add Training</string>
+    <string name="training_name">Training Name</string>
+    <string name="save_training">Save Training</string>
+    <string name="delete_training">Delete Training</string>
+    <string name="training_history">Training History</string>
+    <string name="day_of_total">Day %1$d of %2$d</string>
+    <string name="exercise_item_title">%1$s - Last weight: %2$.1f kg</string>
+    <string name="exercise_item_subtitle">%1$d sets x %2$d reps - Suggested weight: %3$.1f kg</string>
+
+    <!-- Training Plans -->
+    <string name="my_workouts">My Workouts</string>
+    <string name="new_plan">New Plan</string>
+    <string name="edit_plan">Edit Plan</string>
+    <string name="routine_name">Routine Name</string>
+    <string name="exercises_title">Exercises</string>
+    <string name="add_exercise_to_plan">Add Exercise</string>
+    <string name="delete_routine">Delete Routine</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="training">Training</string>
+    <string name="upper_body">Upper body</string>
+    <string name="save_training_session">Save Training</string>
+
+    <!-- Exercise Progress -->
+    <string name="last_weight">Last weight: %1$.1f kg</string>
+    <string name="suggested_weight">Suggested weight: %1$.1f kg</string>
+    <string name="sets_reps_format">%1$d/%2$d sets x %3$d reps</string>
 </resources>
