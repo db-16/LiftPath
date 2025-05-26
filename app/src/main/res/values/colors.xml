@@ -9,4 +9,12 @@
     <color name="inputs">#293038</color>
     <color name="nav_orange_dark">#E64A19</color>
     <color name="goal_achieved">#4CAF50</color>
+    <color name="dialog_background">#2C2C2C</color>
+    <color name="dialog_text_primary">#FFFFFF</color>
+    <color name="dialog_text_secondary">#B3FFFFFF</color>
+    <color name="dialog_input_background">#404040</color>
+    <color name="dialog_button_primary">#2196F3</color>
+    <color name="dialog_button_text">#FFFFFF</color>
+    <color name="dialog_button_secondary">#757575</color>
+    <color name="dialog_stroke">#404040</color>
 </resources>

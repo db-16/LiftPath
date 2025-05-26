@@ -103,15 +103,50 @@ public class ProgressActivity extends AppCompatActivity {
         weightChart.setPinchZoom(true);
         weightChart.setDrawGridBackground(false);
         weightChart.setBackgroundColor(Color.TRANSPARENT);
+        
+        // Ajustar márgenes del gráfico
+        weightChart.setExtraBottomOffset(15f);
+        weightChart.setExtraTopOffset(15f);
+        weightChart.setExtraLeftOffset(15f);
+        weightChart.setExtraRightOffset(15f);
 
+        // Configurar eje X
         XAxis xAxis = weightChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setTextColor(Color.WHITE);
+        xAxis.setTextSize(11f);
         xAxis.setDrawGridLines(false);
+        xAxis.setGranularity(1f);
+        xAxis.setLabelCount(7, true);
+        xAxis.setLabelRotationAngle(-45f);
+        xAxis.setYOffset(10f);
+        xAxis.setDrawAxisLine(true);
+        xAxis.setAxisLineColor(Color.WHITE);
+        xAxis.setAxisLineWidth(1f);
 
+        // Configurar eje Y con intervalos de 1 kg
         weightChart.getAxisLeft().setTextColor(Color.WHITE);
+        weightChart.getAxisLeft().setTextSize(11f);
+        weightChart.getAxisLeft().setDrawGridLines(true);
+        weightChart.getAxisLeft().setGridColor(Color.parseColor("#20FFFFFF")); // Grid más sutil
+        weightChart.getAxisLeft().setGridLineWidth(0.5f);
+        weightChart.getAxisLeft().setGranularity(1f);
+        weightChart.getAxisLeft().setDrawAxisLine(true);
+        weightChart.getAxisLeft().setAxisLineColor(Color.WHITE);
+        weightChart.getAxisLeft().setAxisLineWidth(1f);
+        weightChart.getAxisLeft().setValueFormatter(new com.github.mikephil.charting.formatter.ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return String.format(Locale.getDefault(), "%.0f", value);
+            }
+        });
         weightChart.getAxisRight().setEnabled(false);
-        weightChart.getLegend().setTextColor(Color.WHITE);
+
+        // Configurar leyenda
+        weightChart.getLegend().setEnabled(false);
+        
+        // Habilitar marcadores
+        weightChart.setDrawMarkers(true);
     }
 
     private void loadUserData() {
@@ -140,73 +175,134 @@ public class ProgressActivity extends AppCompatActivity {
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     List<Entry> entries = new ArrayList<>();
                     List<String> dates = new ArrayList<>();
-                    float lastWeight = (float) initialWeight;
-                    int index = 0;
+
+                    // Obtener la fecha actual y crear un calendario para los últimos 10 días
+                    Calendar endDate = Calendar.getInstance();
+                    Calendar startDate = Calendar.getInstance();
+                    startDate.add(Calendar.DAY_OF_MONTH, -9); // 10 días incluyendo hoy
 
                     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM", Locale.getDefault());
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.add(Calendar.MONTH, -1); // Mostrar último mes
+                    Map<String, Double> weightsByDate = new HashMap<>();
+                    double lastKnownWeight = initialWeight;
+                    double minWeight = Double.MAX_VALUE;
+                    double maxWeight = Double.MIN_VALUE;
 
-                    for (int i = 0; i < 30; i++) {
-                        calendar.add(Calendar.DAY_OF_MONTH, 1);
-                        dates.add(dateFormat.format(calendar.getTime()));
-                        entries.add(new Entry(index++, lastWeight));
+                    // Organizar los pesos por fecha y encontrar min/max
+                    for (int i = 0; i < queryDocumentSnapshots.size(); i++) {
+                        Date date = queryDocumentSnapshots.getDocuments().get(i).getDate("date");
+                        Double weight = queryDocumentSnapshots.getDocuments().get(i).getDouble("weight");
+                        if (date != null && weight != null) {
+                            String dateStr = dateFormat.format(date);
+                            weightsByDate.put(dateStr, weight);
+                            minWeight = Math.min(minWeight, weight);
+                            maxWeight = Math.max(maxWeight, weight);
+                        }
                     }
 
-                    if (!queryDocumentSnapshots.isEmpty()) {
-                        for (int i = 0; i < entries.size(); i++) {
-                            boolean foundWeight = false;
-                            Date currentDate = calendar.getTime();
-                            
-                            for (int j = queryDocumentSnapshots.size() - 1; j >= 0; j--) {
-                                Date weightDate = queryDocumentSnapshots.getDocuments().get(j).getDate("date");
-                                if (weightDate != null && isSameDay(weightDate, currentDate)) {
-                                    lastWeight = queryDocumentSnapshots.getDocuments().get(j).getDouble("weight").floatValue();
-                                    foundWeight = true;
-                                    break;
-                                }
-                            }
-                            
-                            if (!foundWeight) {
-                                entries.set(i, new Entry(i, lastWeight));
-                            } else {
-                                entries.set(i, new Entry(i, lastWeight));
-                            }
-                            
-                            calendar.add(Calendar.DAY_OF_MONTH, -1);
+                    // Si no hay datos, usar el peso inicial
+                    if (minWeight == Double.MAX_VALUE) {
+                        minWeight = initialWeight;
+                        maxWeight = initialWeight;
+                    }
+
+                    // Ajustar el rango para incluir el peso objetivo
+                    minWeight = Math.min(minWeight, Math.min(initialWeight, goalWeight));
+                    maxWeight = Math.max(maxWeight, Math.max(initialWeight, goalWeight));
+
+                    // Añadir un margen más amplio al rango
+                    double range = maxWeight - minWeight;
+                    minWeight = Math.floor(minWeight - (range * 0.25)); // Aumentado de 0.1 a 0.25
+                    maxWeight = Math.ceil(maxWeight + (range * 0.25)); // Aumentado de 0.1 a 0.25
+
+                    // Asegurar un rango mínimo de 10 kg si el rango es muy pequeño
+                    if (maxWeight - minWeight < 10) {
+                        double middlePoint = (maxWeight + minWeight) / 2;
+                        minWeight = Math.floor(middlePoint - 5);
+                        maxWeight = Math.ceil(middlePoint + 5);
+                    }
+
+                    // Generar entradas para cada día en el rango
+                    int index = 0;
+                    Calendar currentDate = (Calendar) startDate.clone();
+                    boolean firstWeightFound = false;
+
+                    while (!currentDate.after(endDate)) {
+                        String dateStr = dateFormat.format(currentDate.getTime());
+
+                        if (weightsByDate.containsKey(dateStr)) {
+                            lastKnownWeight = weightsByDate.get(dateStr);
+                            firstWeightFound = true;
+                        } else if (!firstWeightFound) {
+                            lastKnownWeight = initialWeight;
                         }
 
-                        // Actualizar el peso actual con el último peso registrado
-                        updateCurrentWeight(lastWeight);
+                        // Añadir fecha y peso
+                        entries.add(new Entry(index, (float) lastKnownWeight));
+                        dates.add(dateStr);
+                        index++;
+
+                        currentDate.add(Calendar.DAY_OF_MONTH, 1);
                     }
 
-                    LineDataSet dataSet = new LineDataSet(entries, "Peso (kg)");
-                    dataSet.setColor(Color.WHITE);
-                    dataSet.setCircleColor(Color.WHITE);
+                    // Crear y configurar el dataset
+                    LineDataSet dataSet = new LineDataSet(entries, "");
+                    dataSet.setColor(Color.parseColor("#FF9800")); // Color naranja
+                    dataSet.setCircleColor(Color.parseColor("#FF9800"));
+                    dataSet.setCircleRadius(5f);
+                    dataSet.setDrawCircleHole(true);
+                    dataSet.setCircleHoleRadius(2.5f);
+                    dataSet.setCircleHoleColor(Color.parseColor("#293038")); // Color del fondo
                     dataSet.setValueTextColor(Color.WHITE);
+                    dataSet.setValueTextSize(11f);
+                    dataSet.setLineWidth(2.5f);
+                    dataSet.setMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+                    dataSet.setDrawFilled(true);
+                    dataSet.setFillColor(Color.parseColor("#FF9800"));
+                    dataSet.setFillAlpha(50);
+                    dataSet.setDrawValues(true);
+                    dataSet.setHighlightEnabled(true);
+                    dataSet.setHighLightColor(Color.WHITE);
+                    dataSet.setDrawHorizontalHighlightIndicator(false);
+                    dataSet.setValueFormatter(new com.github.mikephil.charting.formatter.ValueFormatter() {
+                        @Override
+                        public String getFormattedValue(float value) {
+                            float roundedValue = Math.round(value);
+                            return String.format(Locale.getDefault(), "%.0f", roundedValue);
+                        }
+                    });
 
                     LineData lineData = new LineData(dataSet);
                     weightChart.setData(lineData);
 
+                    // Configurar el eje Y con el rango calculado
+                    weightChart.getAxisLeft().setAxisMinimum((float) minWeight);
+                    weightChart.getAxisLeft().setAxisMaximum((float) maxWeight);
+                    weightChart.getAxisLeft().setLabelCount(5, true);
+
+                    // Configurar el eje X con las fechas
                     XAxis xAxis = weightChart.getXAxis();
                     xAxis.setValueFormatter(new IndexAxisValueFormatter(dates));
-                    xAxis.setLabelRotationAngle(45f);
-                    xAxis.setLabelCount(7);
+                    xAxis.setGranularity(1f);
+                    xAxis.setLabelCount(dates.size(), true);
+                    xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+                    xAxis.setTextColor(Color.WHITE);
+                    xAxis.setTextSize(10f);
+                    xAxis.setLabelRotationAngle(-45f);
+                    xAxis.setYOffset(5f);
 
+                    // Actualizar el gráfico
                     weightChart.invalidate();
 
                     // Calcular y mostrar porcentaje de progreso
-                    if (initialWeight > 0) {
-                        double progressPercentage;
-                        if (goalWeight > initialWeight) {
-                            // Objetivo de ganar peso
-                            progressPercentage = ((lastWeight - initialWeight) / (goalWeight - initialWeight)) * 100;
-                        } else {
-                            // Objetivo de perder peso
-                            progressPercentage = ((initialWeight - lastWeight) / (initialWeight - goalWeight)) * 100;
-                        }
-                        tvProgressPercentage.setText(String.format(Locale.getDefault(), 
-                            "Progreso: %.1f%%", progressPercentage));
+                    if (initialWeight != 0 && goalWeight != initialWeight) {
+                        double totalChange = goalWeight - initialWeight;
+                        double currentChange = lastKnownWeight - initialWeight;
+                        double progressPercentage = (currentChange / totalChange) * 100;
+
+                        progressPercentage = Math.min(100, Math.max(0, progressPercentage));
+
+                        tvProgressPercentage.setText(String.format(Locale.getDefault(),
+                                "Progreso: %.1f%%", progressPercentage));
                     }
                 });
     }
@@ -233,7 +329,7 @@ public class ProgressActivity extends AppCompatActivity {
                     if (!queryDocumentSnapshots.isEmpty()) {
                         Date lastDate = queryDocumentSnapshots.getDocuments().get(0).getDate("date");
                         if (lastDate != null && isSameDay(lastDate, new Date())) {
-                            Toast.makeText(this, "Ya has registrado tu peso hoy", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, getString(R.string.weight_already_registered), Toast.LENGTH_SHORT).show();
                             return;
                         }
                     }
@@ -255,7 +351,7 @@ public class ProgressActivity extends AppCompatActivity {
                                 updateWeight(newWeight);
                                 dialog.dismiss();
                             } catch (NumberFormatException e) {
-                                Toast.makeText(this, "Por favor, ingresa un peso válido", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(this, getString(R.string.enter_valid_weight), Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -291,18 +387,18 @@ public class ProgressActivity extends AppCompatActivity {
                                 if (goalWeight > 0) {
                                     if (goalWeight > initialWeight && newWeight >= goalWeight) {
                                         // Objetivo alcanzado (ganar peso)
-                                        Toast.makeText(this, "¡Felicidades! Has alcanzado tu objetivo de peso", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(this, getString(R.string.congratulations_goal_reached), Toast.LENGTH_LONG).show();
                                     } else if (goalWeight < initialWeight && newWeight <= goalWeight) {
                                         // Objetivo alcanzado (perder peso)
-                                        Toast.makeText(this, "¡Felicidades! Has alcanzado tu objetivo de peso", Toast.LENGTH_LONG).show();
+                                        Toast.makeText(this, getString(R.string.congratulations_goal_reached), Toast.LENGTH_LONG).show();
                                     }
                                 }
                             })
                             .addOnFailureListener(e -> Toast.makeText(this, 
-                                "Error al actualizar el peso en el perfil", Toast.LENGTH_SHORT).show());
+                                getString(R.string.error_updating_profile), Toast.LENGTH_SHORT).show());
                 })
                 .addOnFailureListener(e -> Toast.makeText(this, 
-                    "Error al guardar el registro de peso", Toast.LENGTH_SHORT).show());
+                    getString(R.string.error_saving_history), Toast.LENGTH_SHORT).show());
     }
 
     private void updateCurrentWeight(double weight) {

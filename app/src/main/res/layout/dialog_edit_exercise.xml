@@ -25,14 +25,14 @@
             <ImageView
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                android:src="@android:drawable/ic_menu_add"
+                android:src="@android:drawable/ic_menu_edit"
                 app:tint="@color/nav_orange"
                 android:layout_marginEnd="16dp"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Añadir Ejercicio"
+                android:text="Editar Ejercicio"
                 android:textColor="#FFFFFF"
                 android:textSize="24sp"
                 android:fontFamily="@font/plus_jakarta_sans"

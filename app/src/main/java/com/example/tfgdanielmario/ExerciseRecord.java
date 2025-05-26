@@ -1,12 +1,11 @@
 package com.example.tfgdanielmario;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExerciseRecord implements Serializable {
-    private static final long serialVersionUID = 1L;
-
+public class ExerciseRecord implements Parcelable {
     private String id;
     private String sessionId;
     private String userId;
@@ -31,6 +30,49 @@ public class ExerciseRecord implements Serializable {
         this.estimatedWeight = initialWeight;
         this.progress = new ArrayList<>();
     }
+
+    protected ExerciseRecord(Parcel in) {
+        id = in.readString();
+        sessionId = in.readString();
+        userId = in.readString();
+        exerciseName = in.readString();
+        reps = in.readInt();
+        sets = in.readInt();
+        initialWeight = in.readFloat();
+        estimatedWeight = in.readFloat();
+        progress = new ArrayList<>();
+        in.readList(progress, ExerciseProgress.class.getClassLoader());
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(sessionId);
+        dest.writeString(userId);
+        dest.writeString(exerciseName);
+        dest.writeInt(reps);
+        dest.writeInt(sets);
+        dest.writeFloat(initialWeight);
+        dest.writeFloat(estimatedWeight);
+        dest.writeList(progress);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<ExerciseRecord> CREATOR = new Creator<ExerciseRecord>() {
+        @Override
+        public ExerciseRecord createFromParcel(Parcel in) {
+            return new ExerciseRecord(in);
+        }
+
+        @Override
+        public ExerciseRecord[] newArray(int size) {
+            return new ExerciseRecord[size];
+        }
+    };
 
     // Getters y Setters
     public String getId() {

@@ -10,11 +10,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/my_workouts"
-        android:textColor="@android:color/white"
-        android:textSize="24sp"
-        android:layout_margin="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:textColor="#FFFFFF"
+        android:textSize="28sp"
+        android:fontFamily="@font/plus_jakarta_sans"
+        android:textStyle="bold"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="24dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <ImageButton
+        android:id="@+id/btnInfo"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@android:drawable/ic_dialog_info"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:layout_marginStart="8dp"
+        android:tint="#FFFFFF"
+        app:layout_constraintStart_toEndOf="@id/tvTitle"
+        app:layout_constraintTop_toTopOf="@id/tvTitle"
+        app:layout_constraintBottom_toBottomOf="@id/tvTitle"
+        android:contentDescription="@string/reps_info"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvWorkoutPlan"
@@ -39,11 +55,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/new_plan"
+            android:textColor="@color/black"
             android:layout_marginEnd="16dp"/>
 
         <Button
             android:id="@+id/btnEditPlan"
             android:layout_width="wrap_content"
+            android:textColor="@color/black"
             android:layout_height="wrap_content"
             android:text="@string/edit_plan"
             android:layout_marginStart="16dp"/>

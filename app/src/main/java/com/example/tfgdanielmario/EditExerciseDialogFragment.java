@@ -9,27 +9,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-public class AddExerciseDialogFragment extends DialogFragment {
-    private OnExerciseAddedListener listener;
-    private String sessionId;
+public class EditExerciseDialogFragment extends DialogFragment {
+    private ExerciseRecord exercise;
+    private OnExerciseEditedListener listener;
 
-    public interface OnExerciseAddedListener {
-        void onExerciseAdded(ExerciseRecord exercise);
+    public interface OnExerciseEditedListener {
+        void onExerciseEdited(ExerciseRecord exercise);
     }
 
-    public static AddExerciseDialogFragment newInstance(String sessionId) {
-        AddExerciseDialogFragment fragment = new AddExerciseDialogFragment();
+    public static EditExerciseDialogFragment newInstance(ExerciseRecord exercise) {
+        EditExerciseDialogFragment fragment = new EditExerciseDialogFragment();
         Bundle args = new Bundle();
-        args.putString("sessionId", sessionId);
+        args.putParcelable("exercise", exercise);
         fragment.setArguments(args);
         return fragment;
     }
@@ -39,7 +37,7 @@ public class AddExerciseDialogFragment extends DialogFragment {
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NO_TITLE, R.style.FullScreenDialog);
         if (getArguments() != null) {
-            sessionId = getArguments().getString("sessionId");
+            exercise = getArguments().getParcelable("exercise");
         }
     }
 
@@ -57,7 +55,7 @@ public class AddExerciseDialogFragment extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.dialog_add_exercise, container, false);
+        View view = inflater.inflate(R.layout.dialog_edit_exercise, container, false);
 
         TextInputLayout tilName = view.findViewById(R.id.tilExerciseName);
         TextInputLayout tilSets = view.findViewById(R.id.tilSets);
@@ -69,6 +67,13 @@ public class AddExerciseDialogFragment extends DialogFragment {
 
         MaterialButton btnSave = view.findViewById(R.id.btnSave);
         MaterialButton btnCancel = view.findViewById(R.id.btnCancel);
+
+        // Establecer valores actuales
+        if (exercise != null) {
+            etName.setText(exercise.getExerciseName());
+            etSets.setText(String.valueOf(exercise.getSets()));
+            etWeight.setText(String.valueOf(exercise.getInitialWeight()));
+        }
 
         btnSave.setOnClickListener(v -> {
             String name = etName.getText().toString().trim();
@@ -94,10 +99,12 @@ public class AddExerciseDialogFragment extends DialogFragment {
                 int sets = Integer.parseInt(setsStr);
                 float weight = Float.parseFloat(weightStr);
 
-                ExerciseRecord exercise = new ExerciseRecord(sessionId, name, 12, sets, weight);
+                exercise.setExerciseName(name);
+                exercise.setSets(sets);
+                exercise.setInitialWeight(weight);
 
                 if (listener != null) {
-                    listener.onExerciseAdded(exercise);
+                    listener.onExerciseEdited(exercise);
                 }
                 dismiss();
             } catch (NumberFormatException e) {
@@ -122,7 +129,7 @@ public class AddExerciseDialogFragment extends DialogFragment {
         }
     }
 
-    public void setOnExerciseAddedListener(OnExerciseAddedListener listener) {
+    public void setOnExerciseEditedListener(OnExerciseEditedListener listener) {
         this.listener = listener;
     }
 } 

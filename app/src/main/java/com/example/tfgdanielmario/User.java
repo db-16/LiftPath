@@ -1,6 +1,10 @@
 package com.example.tfgdanielmario;
 
+import android.util.Log;
+
 import com.google.firebase.firestore.FirebaseFirestore;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 public class User {
 
@@ -137,7 +141,7 @@ public class User {
         return dailyCalories;
     }
 
-    // Método para calcular las calorías diarias
+    // Método para calcular las calorías diarias de forma síncrona
     public void calculateDailyCalories() {
         // Calcular TMB (Tasa Metabólica Basal) usando la fórmula de Mifflin-St Jeor
         double tmb;
@@ -147,55 +151,114 @@ public class User {
             tmb = (10 * currentWeight) + (6.25 * height) - (5 * age) - 161;
         }
 
-        // Obtener el factor de actividad basado en el número de entrenamientos semanales
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection("trainingSessions")
-                .whereEqualTo("userId", id)
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    int numTrainings = queryDocumentSnapshots.size();
-                    
-                    // Factor de actividad basado en el número de entrenamientos
-                    double activityFactor;
-                    if (numTrainings <= 1) {
-                        activityFactor = 1.2; // Sedentario
-                    } else if (numTrainings <= 3) {
-                        activityFactor = 1.375; // Actividad ligera
-                    } else if (numTrainings <= 5) {
-                        activityFactor = 1.55; // Actividad moderada
-                    } else {
-                        activityFactor = 1.725; // Actividad intensa
-                    }
+        Log.d("CalorieCalculation", "TMB inicial: " + tmb);
+        Log.d("CalorieCalculation", "Datos usados - Peso: " + currentWeight + ", Altura: " + height + ", Edad: " + age + ", Género: " + gender);
 
-                    // Calcular calorías totales con el factor de actividad
-                    double totalCalories = tmb * activityFactor;
+        // Crear un CountDownLatch para esperar la respuesta de Firebase
+        CountDownLatch latch = new CountDownLatch(1);
+        final double finalTmb = tmb;
 
-                    // Ajustar según el objetivo
-                    if ("LOSE".equals(goalType)) {
-                        totalCalories -= 500; // Déficit para pérdida de peso
-                    } else if ("GAIN".equals(goalType)) {
-                        totalCalories += 500; // Superávit para ganancia de peso
-                    }
+        // Crear un thread para las operaciones de Firebase
+        Thread firebaseThread = new Thread(() -> {
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            db.collection("trainingSessions")
+                    .whereEqualTo("userId", id)
+                    .get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        try {
+                            int numTrainings = queryDocumentSnapshots.size();
+                            Log.d("CalorieCalculation", "Número de entrenamientos: " + numTrainings);
+                            
+                            // Factor de actividad basado en el número de entrenamientos
+                            double activityFactor;
+                            if (numTrainings <= 1) {
+                                activityFactor = 1.3; // Poco activo
+                            } else if (numTrainings <= 3) {
+                                activityFactor = 1.5; // Moderadamente activo
+                            } else if (numTrainings <= 5) {
+                                activityFactor = 1.7; // Muy activo
+                            } else {
+                                activityFactor = 1.9; // Extremadamente activo
+                            }
 
-                    this.dailyCalories = (int) Math.round(totalCalories);
+                            // Calcular calorías totales
+                            double totalCalories = finalTmb * activityFactor;
+                            Log.d("CalorieCalculation", "TMB: " + finalTmb);
+                            Log.d("CalorieCalculation", "Factor de actividad: " + activityFactor);
+                            Log.d("CalorieCalculation", "Calorías después de factor de actividad: " + totalCalories);
 
-                    // Actualizar el valor en Firestore
-                    db.collection("users")
-                            .document(id)
-                            .update("dailyCalories", this.dailyCalories);
-                })
-                .addOnFailureListener(e -> {
-                    // En caso de error, usar un valor por defecto conservador
-                    double defaultActivityFactor = 1.375;
-                    double totalCalories = tmb * defaultActivityFactor;
-                    
-                    if ("LOSE".equals(goalType)) {
-                        totalCalories -= 500;
-                    } else if ("GAIN".equals(goalType)) {
-                        totalCalories += 500;
-                    }
+                            // Ajustar según el objetivo
+                            if ("LOSE".equals(goalType)) {
+                                totalCalories -= 500;
+                            } else if ("GAIN".equals(goalType)) {
+                                totalCalories += 700;
+                            }
 
-                    this.dailyCalories = (int) Math.round(totalCalories);
-                });
+                            Log.d("CalorieCalculation", "Calorías finales después de ajuste: " + totalCalories);
+                            
+                            // Actualizar el valor
+                            this.dailyCalories = (int) Math.round(totalCalories);
+
+                            // Actualizar en Firestore
+                            CountDownLatch updateLatch = new CountDownLatch(1);
+                            db.collection("users")
+                                    .document(id)
+                                    .update("dailyCalories", this.dailyCalories)
+                                    .addOnSuccessListener(aVoid -> {
+                                        Log.d("CalorieCalculation", "Calorías actualizadas en Firestore: " + this.dailyCalories);
+                                        updateLatch.countDown();
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Log.e("CalorieCalculation", "Error actualizando calorías", e);
+                                        updateLatch.countDown();
+                                    });
+
+                            // Esperar a que se complete la actualización
+                            updateLatch.await(0, TimeUnit.SECONDS);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        } finally {
+                            latch.countDown();
+                        }
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e("CalorieCalculation", "Error obteniendo entrenamientos", e);
+                        // Usar valores por defecto en caso de error
+                        double defaultActivityFactor = 1.5;
+                        double totalCalories = finalTmb * defaultActivityFactor;
+                        
+                        if ("LOSE".equals(goalType)) {
+                            totalCalories -= 500;
+                        } else if ("GAIN".equals(goalType)) {
+                            totalCalories += 700;
+                        }
+
+                        this.dailyCalories = (int) Math.round(totalCalories);
+                        latch.countDown();
+                    });
+        });
+
+        // Iniciar el thread
+        firebaseThread.start();
+
+        try {
+            // Esperar a que termine el cálculo (máximo 10 segundos)
+            boolean completed = latch.await(10, TimeUnit.SECONDS);
+            if (!completed) {
+                Log.e("CalorieCalculation", "Timeout esperando el cálculo de calorías");
+                // Usar un cálculo por defecto en caso de timeout
+                this.dailyCalories = (int) Math.round(tmb * 1.5);
+                if ("GAIN".equals(goalType)) {
+                    this.dailyCalories += 700;
+                }
+            }
+        } catch (InterruptedException e) {
+            Log.e("CalorieCalculation", "Error esperando el cálculo de calorías", e);
+            // Usar un cálculo por defecto en caso de error
+            this.dailyCalories = (int) Math.round(tmb * 1.5);
+            if ("GAIN".equals(goalType)) {
+                this.dailyCalories += 700;
+            }
+        }
     }
 }

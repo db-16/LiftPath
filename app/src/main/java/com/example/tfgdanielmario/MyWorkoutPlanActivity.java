@@ -54,6 +54,14 @@ public class MyWorkoutPlanActivity extends AppCompatActivity {
             return false;
         });
 
+        // Configurar botón de información
+        findViewById(R.id.btnInfo).setOnClickListener(v -> {
+            new androidx.appcompat.app.AlertDialog.Builder(this)
+                .setMessage(getString(R.string.reps_info))
+                .setPositiveButton(getString(R.string.ok), null)
+                .show();
+        });
+
         db = FirebaseFirestore.getInstance();
 
         recyclerView = findViewById(R.id.rvWorkoutPlan);
@@ -92,7 +100,7 @@ public class MyWorkoutPlanActivity extends AppCompatActivity {
             String sessionId = data.getStringExtra("sessionId");
             String sessionName = data.getStringExtra("sessionName");
             if (sessionId != null && sessionName != null) {
-                Toast.makeText(this, "Rutina \"" + sessionName + "\" creada!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.routine_created, sessionName), Toast.LENGTH_SHORT).show();
                 loadTrainingSessions();
             }
         }

@@ -1,44 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/layoutExercise"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardExercise"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:layout_marginBottom="20px"
-    android:background="#1F1F1F">
-
-    <TextView
-        android:id="@+id/tvNameExersice"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/plus_jakarta_sans"
-        android:textColor="#FFFFFF"
-        android:textSize="16sp" />
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginVertical="4dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="2dp"
+    app:cardBackgroundColor="@color/card_background">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="end"
-        android:layout_marginTop="8dp">
+        android:padding="16dp"
+        android:gravity="center_vertical">
 
-        <ImageView
-            android:id="@+id/ivEdit"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:src="@drawable/edit"
-            android:layout_marginEnd="16dp"
-            app:tint="#FFFFFF" />
+        <TextView
+            android:id="@+id/tvNameExersice"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/plus_jakarta_sans_bold"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            tools:text="Press de Banca" />
 
-        <ImageView
-            android:id="@+id/ivDelete"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:src="@drawable/trash"
-            app:tint="#FF4444" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/ivEdit"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/edit"
+                android:layout_marginEnd="16dp"
+                android:padding="4dp"
+                android:background="@drawable/rounded_corner_background"
+                app:tint="@color/white" />
+
+            <ImageView
+                android:id="@+id/ivDelete"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/trash"
+                android:padding="4dp"
+                android:background="@drawable/rounded_corner_background"
+                app:tint="#FF4444" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+</androidx.cardview.widget.CardView>

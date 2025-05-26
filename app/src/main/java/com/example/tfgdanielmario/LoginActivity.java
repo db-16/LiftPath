@@ -41,19 +41,21 @@ public class LoginActivity extends AppCompatActivity {
         String password = etPassword.getText().toString().trim();
 
         if (mail.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Please enter your email and password", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.enter_email_password), Toast.LENGTH_SHORT).show();
             return;
         }
 
         auth.signInWithEmailAndPassword(mail, password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, getString(R.string.login_success), Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(LoginActivity.this, MyWorkoutPlanActivity.class);
                         startActivity(intent);
                         finish();
                     } else {
-                        Toast.makeText(LoginActivity.this, "Login failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, 
+                            getString(R.string.login_failed, task.getException().getMessage()), 
+                            Toast.LENGTH_SHORT).show();
                     }
                 });
     }

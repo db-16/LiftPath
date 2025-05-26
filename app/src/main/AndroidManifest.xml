@@ -33,24 +33,19 @@
         <activity android:name=".AddTrainingSessionActivity"
             android:exported="false" />
 
-        <!-- Actividad para guardar progreso de ejercicio -->
-        <activity android:name=".ExerciseProgressDialogFragment"
-            android:exported="false"
-            tools:ignore="Instantiatable" />
-
-        <activity android:name=".AddExercise"
-            android:exported="true"/>
         <activity android:name=".TrainingSessionActivity"
             android:parentActivityName=".MyWorkoutPlanActivity"/>
         <activity android:name=".EditPlanListActivity"
             android:parentActivityName=".MyWorkoutPlanActivity"/>
         <activity android:name=".EditPlanDetailActivity"
             android:parentActivityName=".EditPlanListActivity"/>
-        <activity android:name=".EditExerciseActivity" />
         
         <!-- Nueva actividad para el progreso -->
         <activity android:name=".ProgressActivity"
             android:exported="false" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

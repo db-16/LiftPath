@@ -53,36 +53,111 @@
                         android:textColor="#FFFFFF"
                         android:textSize="18sp"
                         android:layout_marginBottom="16dp"
-                        android:fontFamily="sans-serif-medium"/>
+                        android:fontFamily="@font/plus_jakarta_sans_bold"/>
 
                     <TextView
-                        android:id="@+id/tvNameAge"
+                        android:id="@+id/tvName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/name"
                         android:textColor="#FFFFFF"
                         android:textSize="24sp"
-                        android:gravity="center"
-                        android:layout_marginBottom="24dp"/>
+                        android:fontFamily="@font/plus_jakarta_sans_bold"
+                        android:layout_marginBottom="8dp"/>
 
-                    <TextView
-                        android:id="@+id/tvJob"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="#AAAAAA"
-                        android:textSize="16sp"
-                        android:gravity="center"
-                        android:layout_marginBottom="4dp"
-                        android:text="@string/occupation" />
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="8dp">
 
-                    <TextView
-                        android:id="@+id/tvLocation"
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/age_label"
+                            android:textColor="#78909C"
+                            android:textSize="16sp"
+                            android:fontFamily="@font/plus_jakarta_sans"/>
+
+                        <TextView
+                            android:id="@+id/tvAge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#FFFFFF"
+                            android:textSize="16sp"
+                            android:layout_marginStart="8dp"
+                            android:fontFamily="@font/plus_jakarta_sans"/>
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="#AAAAAA"
-                        android:textSize="16sp"
-                        android:gravity="center"
-                        android:text="@string/location" />
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="8dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/height_label"
+                            android:textColor="#78909C"
+                            android:textSize="16sp"
+                            android:fontFamily="@font/plus_jakarta_sans"/>
+
+                        <TextView
+                            android:id="@+id/tvHeight"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#FFFFFF"
+                            android:textSize="16sp"
+                            android:layout_marginStart="8dp"
+                            android:fontFamily="@font/plus_jakarta_sans"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="8dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/gender"
+                            android:textColor="#78909C"
+                            android:textSize="16sp"
+                            android:fontFamily="@font/plus_jakarta_sans"/>
+
+                        <TextView
+                            android:id="@+id/tvGender"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#FFFFFF"
+                            android:textSize="16sp"
+                            android:layout_marginStart="8dp"
+                            android:fontFamily="@font/plus_jakarta_sans"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/email_label"
+                            android:textColor="#78909C"
+                            android:textSize="16sp"
+                            android:fontFamily="@font/plus_jakarta_sans"/>
+
+                        <TextView
+                            android:id="@+id/tvEmail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#FFFFFF"
+                            android:textSize="16sp"
+                            android:layout_marginStart="8dp"
+                            android:fontFamily="@font/plus_jakarta_sans"/>
+                    </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -233,7 +308,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/exercises"
+                            android:text="@string/calories"
                             android:textColor="#FFFFFF"
                             android:textSize="16sp"
                             android:layout_marginBottom="4dp"

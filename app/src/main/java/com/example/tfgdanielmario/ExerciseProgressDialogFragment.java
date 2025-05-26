@@ -35,7 +35,7 @@ public class ExerciseProgressDialogFragment extends DialogFragment {
     public static ExerciseProgressDialogFragment newInstance(ExerciseRecord exercise) {
         ExerciseProgressDialogFragment fragment = new ExerciseProgressDialogFragment();
         Bundle args = new Bundle();
-        args.putSerializable(ARG_EXERCISE, exercise);
+        args.putParcelable(ARG_EXERCISE, exercise);
         fragment.setArguments(args);
         return fragment;
     }
@@ -54,7 +54,7 @@ public class ExerciseProgressDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (getArguments() != null) {
-            exercise = (ExerciseRecord) getArguments().getSerializable(ARG_EXERCISE);
+            exercise = getArguments().getParcelable(ARG_EXERCISE);
         }
 
         View view = inflater.inflate(R.layout.dialog_save_progress, container, false);
@@ -87,7 +87,7 @@ public class ExerciseProgressDialogFragment extends DialogFragment {
             int seriesCompletadas = exercise.getProgress() != null ? exercise.getProgress().size() : 0;
             if (seriesCompletadas >= exercise.getSets()) {
                 Toast.makeText(getContext(), 
-                    "Ya has completado todas las series de este ejercicio", 
+                    getString(R.string.series_completed), 
                     Toast.LENGTH_SHORT).show();
                 dismiss();
             }
@@ -98,7 +98,7 @@ public class ExerciseProgressDialogFragment extends DialogFragment {
             String loadStr = etLoad.getText().toString();
 
             if (repsStr.isEmpty() || loadStr.isEmpty()) {
-                Toast.makeText(getContext(), "Por favor completa todos los campos", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.fill_all_fields), Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -107,7 +107,7 @@ public class ExerciseProgressDialogFragment extends DialogFragment {
                 double load = Double.parseDouble(loadStr);
 
                 if (reps <= 0 || load <= 0) {
-                    Toast.makeText(getContext(), "Los valores deben ser mayores que 0", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getString(R.string.values_greater_than_zero), Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -115,7 +115,7 @@ public class ExerciseProgressDialogFragment extends DialogFragment {
                 int seriesCompletadas = exercise.getProgress() != null ? exercise.getProgress().size() : 0;
                 if (seriesCompletadas >= exercise.getSets()) {
                     Toast.makeText(getContext(), 
-                        "Ya has completado todas las series de este ejercicio", 
+                        getString(R.string.series_completed), 
                         Toast.LENGTH_SHORT).show();
                     dismiss();
                     return;
@@ -144,7 +144,7 @@ public class ExerciseProgressDialogFragment extends DialogFragment {
                 dismiss();
 
             } catch (NumberFormatException e) {
-                Toast.makeText(getContext(), "Por favor ingresa valores numéricos válidos", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.enter_valid_numbers), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -163,5 +163,13 @@ public class ExerciseProgressDialogFragment extends DialogFragment {
                 ViewGroup.LayoutParams.WRAP_CONTENT
             );
         }
+    }
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        return dialog;
     }
 }

@@ -17,6 +17,9 @@
     <string name="login">Login</string>
     <string name="login_button">Login</string>
     <string name="register_redirect">Don\'t have an account? Register</string>
+    <string name="login_success">Login successful</string>
+    <string name="login_failed">Login failed: %s</string>
+    <string name="enter_email_password">Please enter your email and password</string>
     
     <!-- Perfil -->
     <string name="settings">Settings</string>
@@ -27,7 +30,7 @@
     <string name="weight_format">%.1f kg</string>
     <string name="weight_difference_positive">+%.1f kg</string>
     <string name="weight_difference_negative">%.1f kg</string>
-    <string name="personal_info">Personal Information</string>
+    <string name="personal_info">Información Personal</string>
     <string name="name">Name</string>
     <string name="occupation">Occupation</string>
     <string name="location">Location</string>
@@ -38,6 +41,12 @@
     <string name="zero">0</string>
     <string name="zero_kg">0.0 kg</string>
     <string name="minus_kg">-0.0 kg</string>
+    <string name="age_label">Edad:</string>
+    <string name="years_old">%d años</string>
+    <string name="height_label">Altura:</string>
+    <string name="height_cm">%d cm</string>
+    <string name="gender">Género:</string>
+    <string name="email_label">Email:</string>
     
     <!-- Mensajes -->
     <string name="fill_all_fields">Please fill in all fields</string>
@@ -53,13 +62,42 @@
     <string name="training_deleted">Training deleted successfully</string>
     <string name="progress_saved">Progress saved successfully</string>
     <string name="weight_updated">Weight updated successfully</string>
+    <string name="weight_already_registered">You have already registered your weight today</string>
+    <string name="enter_valid_weight">Please enter a valid weight</string>
+    <string name="exercise_updated">Exercise updated successfully</string>
+    <string name="error_updating_exercise">Error updating exercise</string>
+    <string name="error_adding_exercise">Error adding exercise</string>
+    <string name="error_deleting_exercise">Error deleting exercise</string>
+    <string name="error_saving_changes">Error saving changes</string>
+    <string name="error_saving_progress">Error saving progress</string>
+    <string name="error_loading_exercises">Error loading exercises</string>
+    <string name="error_saving_history">Error saving history</string>
+    <string name="error_updating_profile">Error updating profile</string>
+    <string name="error_user_not_identified">Error: User not identified</string>
+    <string name="congratulations_goal_reached">Congratulations! You have reached your weight goal</string>
+    <string name="series_completed">You have completed all sets for this exercise</string>
+    <string name="values_greater_than_zero">Values must be greater than zero</string>
+    <string name="enter_valid_numbers">Please enter valid numbers</string>
+    
+    <!-- Diálogos -->
+    <string name="delete_exercise_title">Delete exercise</string>
+    <string name="delete_exercise_message">Are you sure you want to delete this exercise?</string>
+    <string name="delete_routine_title">Delete routine</string>
+    <string name="delete_routine_message">Are you sure you want to delete this routine?</string>
+    <string name="exit_without_saving_title">Exit without saving?</string>
+    <string name="exit_without_saving_message">You have unsaved progress. Are you sure you want to exit?</string>
+    <string name="delete">Delete</string>
+    <string name="exit">Exit</string>
+    <string name="routine_created">Routine \"%s\" created!</string>
+    <string name="name_cannot_be_empty">Name cannot be empty</string>
+    <string name="changes_saved">Changes saved</string>
     
     <!-- Botones -->
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
     <string name="logout">Logout</string>
     <string name="edit">Edit</string>
-    <string name="delete">Delete</string>
+    <string name="ok">OK</string>
 
     <!-- Arrays -->
     <string-array name="goals_array">
@@ -114,9 +152,13 @@
     <string name="training">Training</string>
     <string name="upper_body">Upper body</string>
     <string name="save_training_session">Save Training</string>
+    <string name="reps_info">It is recommended to do between 6 and 12 repetitions per exercise</string>
 
     <!-- Exercise Progress -->
-    <string name="last_weight">Last weight: %1$.1f kg</string>
-    <string name="suggested_weight">Suggested weight: %1$.1f kg</string>
+    <string name="last_weight">Last: %1$.1f kg</string>
+    <string name="suggested_weight">Suggested : %1$.1f kg</string>
     <string name="sets_reps_format">%1$d/%2$d sets x %3$d reps</string>
+    <string name="selecciona_una_rutina_para_editar">Select a routine to edit</string>
+    <string name="select_routine_name">Routine name</string>
+    <string name="calories">Dialy Calories</string>
 </resources>

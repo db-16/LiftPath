@@ -3,8 +3,11 @@ package com.example.tfgdanielmario;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
+import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,6 +31,14 @@ public class EditPlanListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_plan_list);
 
+        // Configurar Toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle("Editar Rutinas");
+        }
+
         recyclerView = findViewById(R.id.rvWorkoutPlan);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         db = FirebaseFirestore.getInstance();
@@ -42,6 +53,19 @@ public class EditPlanListActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         loadUserPlans();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            // Navegar a MyWorkoutPlanActivity y limpiar la pila
+            Intent intent = new Intent(this, MyWorkoutPlanActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void loadUserPlans() {

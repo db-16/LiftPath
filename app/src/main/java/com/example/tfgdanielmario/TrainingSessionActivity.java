@@ -20,6 +20,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -112,9 +113,9 @@ public class TrainingSessionActivity extends AppCompatActivity {
                         .document(updatedExercise.getId())
                         .set(updatedExercise)
                         .addOnSuccessListener(aVoid ->
-                                Toast.makeText(this, "Progreso guardado", Toast.LENGTH_SHORT).show())
+                                Toast.makeText(this, getString(R.string.progress_saved), Toast.LENGTH_SHORT).show())
                         .addOnFailureListener(e ->
-                                Toast.makeText(this, "Error al guardar el progreso", Toast.LENGTH_SHORT).show());
+                                Toast.makeText(this, getString(R.string.error_saving_progress), Toast.LENGTH_SHORT).show());
 
                 adapter.notifyDataSetChanged();
             });
@@ -226,87 +227,64 @@ public class TrainingSessionActivity extends AppCompatActivity {
     }
 
     private void saveTrainingSession() {
-        if (exercises.isEmpty()) {
-            Toast.makeText(this, "No hay ejercicios guardados", Toast.LENGTH_SHORT).show();
+        // Verificar si hay ejercicios con progreso
+        boolean hasProgress = false;
+        for (ExerciseRecord exercise : exercises) {
+            if (exercise.getProgress() != null && !exercise.getProgress().isEmpty()) {
+                hasProgress = true;
+                break;
+            }
+        }
+
+        if (!hasProgress) {
+            Toast.makeText(this, getString(R.string.fill_all_fields), Toast.LENGTH_SHORT).show();
             return;
         }
 
-        String historyId = UUID.randomUUID().toString();
-        TrainingHistory history = new TrainingHistory(
-                historyId,
-                userId,
-                sessionId,
-                new java.util.Date(),
-                new ArrayList<>(exercises)
-        );
+        // Crear el historial de entrenamiento
+        TrainingHistory history = new TrainingHistory();
+        history.setUserId(userId);
+        history.setSessionId(sessionId);
+        history.setTimestamp(new Date());
+        history.setExercises(exercises);
 
-        // Primero guardamos en el historial
+        // Guardar el historial
         db.collection("trainingHistory")
-                .document(historyId)
-                .set(history)
-                .addOnSuccessListener(aVoid -> {
-                    // Después de guardar el historial, actualizamos los ejercicios en la sesión
+                .add(history)
+                .addOnSuccessListener(documentReference -> {
+                    // Actualizar los ejercicios en la sesión
                     WriteBatch batch = db.batch();
                     
-                    // Primero eliminamos los ejercicios existentes
-                    db.collection("trainingSessions")
-                            .document(sessionId)
-                            .collection("exercises")
-                            .get()
-                            .addOnSuccessListener(querySnapshot -> {
-                                // Eliminar ejercicios existentes
-                                for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
-                                    batch.delete(doc.getReference());
-                                }
-                                
-                                // Añadir los ejercicios actualizados
-                                for (ExerciseRecord exercise : exercises) {
-                                    // Actualizar el peso inicial con el último peso más alto usado
-                                    if (exercise.getProgress() != null && !exercise.getProgress().isEmpty()) {
-                                        double maxWeight = exercise.getProgress().get(0).getWeight();
-                                        for (ExerciseProgress progress : exercise.getProgress()) {
-                                            if (progress.getWeight() > maxWeight) {
-                                                maxWeight = progress.getWeight();
-                                            }
-                                        }
-                                        exercise.setInitialWeight((float)maxWeight);
-                                    }
-                                    
-                                    // Limpiar el progreso para la próxima sesión
-                                    exercise.setProgress(new ArrayList<>());
-                                    
-                                    // Añadir el ejercicio actualizado
-                                    batch.set(
-                                        db.collection("trainingSessions")
-                                            .document(sessionId)
-                                            .collection("exercises")
-                                            .document(),
-                                        exercise
-                                    );
-                                }
-                                
-                                // Ejecutar todas las operaciones
-                                batch.commit()
-                                    .addOnSuccessListener(batchResult -> {
-                                        Toast.makeText(this, "Entrenamiento guardado correctamente", Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent(TrainingSessionActivity.this, MyWorkoutPlanActivity.class);
-                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                        startActivity(intent);
-                                        finish();
-                                    })
-                                    .addOnFailureListener(e -> {
-                                        Log.e(TAG, "Error al actualizar ejercicios en la sesión", e);
-                                        Toast.makeText(this, "Error al actualizar ejercicios", Toast.LENGTH_SHORT).show();
-                                    });
-                            })
-                            .addOnFailureListener(e -> {
-                                Log.e(TAG, "Error al obtener ejercicios existentes", e);
-                                Toast.makeText(this, "Error al actualizar ejercicios", Toast.LENGTH_SHORT).show();
-                            });
+                    // Actualizar cada ejercicio usando su ID existente
+                    for (ExerciseRecord exercise : exercises) {
+                        if (exercise.getId() != null && !exercise.getId().isEmpty()) {
+                            batch.set(
+                                db.collection("trainingSessions")
+                                    .document(sessionId)
+                                    .collection("exercises")
+                                    .document(exercise.getId()),
+                                exercise
+                            );
+                        }
+                    }
+                    
+                    // Ejecutar todas las operaciones
+                    batch.commit()
+                        .addOnSuccessListener(batchResult -> {
+                            Toast.makeText(this, getString(R.string.training_saved), Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(TrainingSessionActivity.this, MyWorkoutPlanActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                            finish();
+                        })
+                        .addOnFailureListener(e -> {
+                            Log.e(TAG, "Error al actualizar ejercicios en la sesión", e);
+                            Toast.makeText(this, getString(R.string.error_updating_exercise), Toast.LENGTH_SHORT).show();
+                        });
                 })
                 .addOnFailureListener(e -> {
                     Log.e(TAG, "Error al guardar el historial", e);
-                    Toast.makeText(this, "Error al guardar el historial", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.error_saving_history), Toast.LENGTH_SHORT).show();
                 });
     }
 
@@ -332,10 +310,10 @@ public class TrainingSessionActivity extends AppCompatActivity {
 
         if (hasProgress) {
             new androidx.appcompat.app.AlertDialog.Builder(this)
-                .setTitle("¿Salir sin guardar?")
-                .setMessage("Tienes progreso sin guardar. ¿Estás seguro de que quieres salir?")
-                .setPositiveButton("Salir", (dialog, which) -> super.onBackPressed())
-                .setNegativeButton("Cancelar", null)
+                .setTitle(getString(R.string.exit_without_saving_title))
+                .setMessage(getString(R.string.exit_without_saving_message))
+                .setPositiveButton(getString(R.string.exit), (dialog, which) -> super.onBackPressed())
+                .setNegativeButton(getString(R.string.cancel), null)
                 .show();
         } else {
             super.onBackPressed();

@@ -10,6 +10,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 public class WorkoutPlanAdapter extends RecyclerView.Adapter<WorkoutPlanAdapter.WorkoutViewHolder> {
@@ -38,8 +40,9 @@ public class WorkoutPlanAdapter extends RecyclerView.Adapter<WorkoutPlanAdapter.
     @Override
     public void onBindViewHolder(@NonNull WorkoutViewHolder holder, int position) {
         TrainingSession session = sessions.get(position);
-        String sessionTitle = "Day " + (position + 1) + ": " + session.getName();
-        holder.tvWorkoutDay.setText(sessionTitle);
+        String sessionDay = "Day " + (position + 1);
+        holder.tvWorkoutDay.setText(sessionDay);
+        holder.tvWorkoutName.setText(session.getName());
 
         // Aquí asignamos el click listener al ítem completo
         holder.itemView.setOnClickListener(v -> {
@@ -56,12 +59,14 @@ public class WorkoutPlanAdapter extends RecyclerView.Adapter<WorkoutPlanAdapter.
 
     static class WorkoutViewHolder extends RecyclerView.ViewHolder {
         TextView tvWorkoutDay;
+        TextView tvWorkoutName;
         ImageView ivArrow;
 
         public WorkoutViewHolder(@NonNull View itemView) {
             super(itemView);
             tvWorkoutDay = itemView.findViewById(R.id.tvWorkoutDay);
             ivArrow = itemView.findViewById(R.id.ivArrow);
+            tvWorkoutName= itemView.findViewById(R.id.tvWorkoutName);
         }
     }
 }

@@ -6,10 +6,12 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,22 +40,30 @@ public class EditPlanDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_plan_detail);
 
-        // Configurar ActionBar
+        // Configurar Toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle("Editar Rutina");
         }
 
-        // Inicializar vistas
+        // Obtener ID de la sesión
+        sessionId = getIntent().getStringExtra("sessionId");
+        if (sessionId == null) {
+            Toast.makeText(this, "Error: No se pudo cargar la rutina", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
+        // Inicializar vistas y variables
         etSessionName = findViewById(R.id.etSessionName);
         rvExercises = findViewById(R.id.rvExercises);
         btnAddExercise = findViewById(R.id.btnAddExercise);
         btnSaveChanges = findViewById(R.id.btnSaveChanges);
         btnDeletePlan = findViewById(R.id.btnDeletePlan);
-
-        // Inicializar Firebase y lista de ejercicios
-        db = FirebaseFirestore.getInstance();
         exercises = new ArrayList<>();
+        db = FirebaseFirestore.getInstance();
 
         // Configurar RecyclerView
         rvExercises.setLayoutManager(new LinearLayoutManager(this));
@@ -70,18 +80,28 @@ public class EditPlanDetailActivity extends AppCompatActivity {
         });
         rvExercises.setAdapter(adapter);
 
-        // Obtener ID de la sesión
-        sessionId = getIntent().getStringExtra("sessionId");
-        if (sessionId == null) {
-            Toast.makeText(this, "Error: No se pudo cargar la rutina", Toast.LENGTH_SHORT).show();
-            finish();
-            return;
-        }
-
         // Configurar botones
         btnAddExercise.setOnClickListener(v -> {
-            Intent intent = new Intent(this, AddExercise.class);
-            startActivityForResult(intent, ADD_EXERCISE_REQUEST_CODE);
+            AddExerciseDialogFragment dialog = new AddExerciseDialogFragment();
+            dialog.setOnExerciseAddedListener(exercise -> {
+                exercise.setSessionId(sessionId);
+                // Añadir nuevo ejercicio
+                db.collection("trainingSessions")
+                        .document(sessionId)
+                        .collection("exercises")
+                        .add(exercise)
+                        .addOnSuccessListener(documentReference -> {
+                            exercise.setId(documentReference.getId());
+                            exercises.add(exercise);
+                            adapter.notifyDataSetChanged();
+                            Toast.makeText(this, getString(R.string.exercise_added), Toast.LENGTH_SHORT).show();
+                        })
+                        .addOnFailureListener(e -> {
+                            Log.e(TAG, "Error al añadir ejercicio", e);
+                            Toast.makeText(this, getString(R.string.error_adding_exercise), Toast.LENGTH_SHORT).show();
+                        });
+            });
+            dialog.show(getSupportFragmentManager(), "AddExerciseDialog");
         });
 
         btnSaveChanges.setOnClickListener(v -> saveChanges());
@@ -89,6 +109,15 @@ public class EditPlanDetailActivity extends AppCompatActivity {
 
         // Cargar datos
         loadSessionData();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void loadSessionData() {
@@ -133,16 +162,38 @@ public class EditPlanDetailActivity extends AppCompatActivity {
     }
 
     private void editExercise(ExerciseRecord exercise) {
-        Intent intent = new Intent(this, EditExerciseActivity.class);
-        intent.putExtra("exerciseRecord", exercise);
-        startActivityForResult(intent, ADD_EXERCISE_REQUEST_CODE);
+        EditExerciseDialogFragment dialog = EditExerciseDialogFragment.newInstance(exercise);
+        dialog.setOnExerciseEditedListener(updatedExercise -> {
+            // Actualizar ejercicio existente
+            db.collection("trainingSessions")
+                    .document(sessionId)
+                    .collection("exercises")
+                    .document(exercise.getId())
+                    .set(updatedExercise)
+                    .addOnSuccessListener(aVoid -> {
+                        // Actualizar el ejercicio en la lista local
+                        for (int i = 0; i < exercises.size(); i++) {
+                            if (exercises.get(i).getId().equals(exercise.getId())) {
+                                exercises.set(i, updatedExercise);
+                                adapter.notifyItemChanged(i);
+                                break;
+                            }
+                        }
+                        Toast.makeText(this, getString(R.string.exercise_updated), Toast.LENGTH_SHORT).show();
+                    })
+                    .addOnFailureListener(e -> {
+                        Log.e(TAG, "Error al actualizar ejercicio", e);
+                        Toast.makeText(this, getString(R.string.error_updating_exercise), Toast.LENGTH_SHORT).show();
+                    });
+        });
+        dialog.show(getSupportFragmentManager(), "EditExerciseDialog");
     }
 
     private void deleteExercise(ExerciseRecord exercise) {
         new androidx.appcompat.app.AlertDialog.Builder(this)
-                .setTitle("Eliminar ejercicio")
-                .setMessage("¿Estás seguro de que quieres eliminar este ejercicio?")
-                .setPositiveButton("Eliminar", (dialog, which) -> {
+                .setTitle(getString(R.string.delete_exercise_title))
+                .setMessage(getString(R.string.delete_exercise_message))
+                .setPositiveButton(getString(R.string.delete), (dialog, which) -> {
                     db.collection("trainingSessions")
                             .document(sessionId)
                             .collection("exercises")
@@ -151,19 +202,19 @@ public class EditPlanDetailActivity extends AppCompatActivity {
                             .addOnSuccessListener(aVoid -> {
                                 exercises.remove(exercise);
                                 adapter.notifyDataSetChanged();
-                                Toast.makeText(this, "Ejercicio eliminado", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(this, getString(R.string.exercise_deleted), Toast.LENGTH_SHORT).show();
                             })
                             .addOnFailureListener(e -> Toast.makeText(this, 
-                                "Error al eliminar ejercicio", Toast.LENGTH_SHORT).show());
+                                getString(R.string.error_deleting_exercise), Toast.LENGTH_SHORT).show());
                 })
-                .setNegativeButton("Cancelar", null)
+                .setNegativeButton(getString(R.string.cancel), null)
                 .show();
     }
 
     private void saveChanges() {
         String newName = etSessionName.getText().toString().trim();
         if (newName.isEmpty()) {
-            etSessionName.setError("El nombre no puede estar vacío");
+            etSessionName.setError(getString(R.string.name_cannot_be_empty));
             return;
         }
 
@@ -173,8 +224,7 @@ public class EditPlanDetailActivity extends AppCompatActivity {
                 .document(sessionId)
                 .update("name", newName)
                 .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(this, "Cambios guardados", Toast.LENGTH_SHORT).show();
-                    // Navegar a MyWorkoutPlanActivity y limpiar la pila de actividades
+                    Toast.makeText(this, getString(R.string.changes_saved), Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(this, MyWorkoutPlanActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
@@ -182,17 +232,17 @@ public class EditPlanDetailActivity extends AppCompatActivity {
                 })
                 .addOnFailureListener(e -> {
                     Log.e(TAG, "Error al guardar cambios", e);
-                    Toast.makeText(this, "Error al guardar cambios", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.error_saving_changes), Toast.LENGTH_SHORT).show();
                     btnSaveChanges.setEnabled(true);
                 });
     }
 
     private void confirmDelete() {
         new androidx.appcompat.app.AlertDialog.Builder(this)
-                .setTitle("Eliminar rutina")
-                .setMessage("¿Estás seguro de que quieres eliminar esta rutina?")
-                .setPositiveButton("Eliminar", (dialog, which) -> deletePlan())
-                .setNegativeButton("Cancelar", null)
+                .setTitle(getString(R.string.delete_routine_title))
+                .setMessage(getString(R.string.delete_routine_message))
+                .setPositiveButton(getString(R.string.delete), (dialog, which) -> deletePlan())
+                .setNegativeButton(getString(R.string.cancel), null)
                 .show();
     }
 
@@ -228,64 +278,5 @@ public class EditPlanDetailActivity extends AppCompatActivity {
                             Toast.makeText(this, "Error al eliminar rutina", Toast.LENGTH_SHORT).show();
                         });
                 });
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ADD_EXERCISE_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
-            ExerciseRecord exercise = (ExerciseRecord) data.getSerializableExtra("exercise");
-            if (exercise != null) {
-                if (exercise.getId() != null) {
-                    // Actualizar ejercicio existente
-                    db.collection("trainingSessions")
-                            .document(sessionId)
-                            .collection("exercises")
-                            .document(exercise.getId())
-                            .set(exercise)
-                            .addOnSuccessListener(aVoid -> {
-                                // Actualizar el ejercicio en la lista local
-                                for (int i = 0; i < exercises.size(); i++) {
-                                    if (exercises.get(i).getId().equals(exercise.getId())) {
-                                        exercises.set(i, exercise);
-                                        adapter.notifyItemChanged(i);
-                                        break;
-                                    }
-                                }
-                                Toast.makeText(this, "Ejercicio actualizado", Toast.LENGTH_SHORT).show();
-                            })
-                            .addOnFailureListener(e -> {
-                                Log.e(TAG, "Error al actualizar ejercicio", e);
-                                Toast.makeText(this, "Error al actualizar ejercicio", Toast.LENGTH_SHORT).show();
-                            });
-                } else {
-                    // Añadir nuevo ejercicio
-                    exercise.setSessionId(sessionId);
-                    db.collection("trainingSessions")
-                            .document(sessionId)
-                            .collection("exercises")
-                            .add(exercise)
-                            .addOnSuccessListener(documentReference -> {
-                                exercise.setId(documentReference.getId());
-                                exercises.add(exercise);
-                                adapter.notifyDataSetChanged();
-                                Toast.makeText(this, "Ejercicio añadido", Toast.LENGTH_SHORT).show();
-                            })
-                            .addOnFailureListener(e -> {
-                                Log.e(TAG, "Error al añadir ejercicio", e);
-                                Toast.makeText(this, "Error al añadir ejercicio", Toast.LENGTH_SHORT).show();
-                            });
-                }
-            }
-        }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }

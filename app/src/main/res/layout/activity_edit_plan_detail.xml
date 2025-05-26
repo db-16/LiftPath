@@ -1,73 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
     android:background="#121212">
 
-    <!-- Nombre de la rutina -->
-    <EditText
-        android:id="@+id/etSessionName"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/routine_name"
-        android:textColorHint="#808080"
-        android:textColor="#FFFFFF"
-        android:textSize="24sp"
-        android:layout_marginBottom="16dp"/>
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/nav_orange"
+        android:elevation="4dp" />
 
-    <!-- Lista de ejercicios -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/exercises_title"
-        android:textColor="#FFFFFF"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="8dp"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvExercises"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
-
-    <!-- Botón Añadir Ejercicio -->
-    <Button
-        android:id="@+id/btnAddExercise"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/add_exercise_to_plan"
-        android:drawableStart="@android:drawable/ic_input_add"
-        android:padding="12dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"/>
-
-    <!-- Botones de acción -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="8dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
 
-        <Button
-            android:id="@+id/btnDeletePlan"
-            android:layout_width="0dp"
+        <!-- Nombre de la rutina -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilExerciseName"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/delete_routine"
-            android:backgroundTint="#FF5252"
-            android:layout_marginEnd="4dp"/>
+            android:layout_marginBottom="16dp"
+            android:hint="@string/select_routine_name"
+            style="@style/Widget.App.TextInputLayout">
 
-        <Button
-            android:id="@+id/btnSaveChanges"
-            android:layout_width="0dp"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etSessionName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:inputType="textCapSentences"
+                android:maxLines="1"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Lista de ejercicios -->
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/save_changes"
-            android:layout_marginStart="4dp"/>
+            android:text="@string/exercises_title"
+            android:textColor="#FFFFFF"
+            android:fontFamily="@font/plus_jakarta_sans_bold"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp"/>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvExercises"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <!-- Botón Añadir Ejercicio -->
+        <Button
+            android:id="@+id/btnAddExercise"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/add_exercise_to_plan"
+            android:textColor="@color/black"
+            android:drawableStart="@android:drawable/ic_input_add"
+            android:padding="12dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- Botones de acción -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <Button
+                android:id="@+id/btnDeletePlan"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/delete_routine"
+                android:textColor="@color/black"
+                android:backgroundTint="#FF5252"
+                android:layout_marginEnd="4dp"/>
+
+            <Button
+                android:id="@+id/btnSaveChanges"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:text="@string/save_changes"
+                android:layout_marginStart="4dp"/>
+        </LinearLayout>
     </LinearLayout>
-
 </LinearLayout>

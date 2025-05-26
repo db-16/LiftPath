@@ -17,6 +17,9 @@
     <string name="login">Iniciar Sesión</string>
     <string name="login_button">Iniciar Sesión</string>
     <string name="register_redirect">¿No tienes cuenta? Regístrate</string>
+    <string name="login_success">Inicio de sesión exitoso</string>
+    <string name="login_failed">Error al iniciar sesión: %s</string>
+    <string name="enter_email_password">Por favor, ingresa tu correo y contraseña</string>
     
     <!-- Perfil -->
     <string name="settings">Ajustes</string>
@@ -54,6 +57,9 @@
     <string name="save_training">Guardar Entrenamiento</string>
     <string name="delete_training">Eliminar Entrenamiento</string>
     <string name="training_history">Historial de Entrenamientos</string>
+    <string name="day_of_total">Día %1$d de %2$d</string>
+    <string name="exercise_item_title">%1$s - Último peso: %2$.1f kg</string>
+    <string name="exercise_item_subtitle">%1$d series x %2$d reps - Peso sugerido: %3$.1f kg</string>
     
     <!-- Progreso -->
     <string name="progress">Progreso</string>
@@ -81,13 +87,52 @@
     <string name="training_deleted">Entrenamiento eliminado exitosamente</string>
     <string name="progress_saved">Progreso guardado exitosamente</string>
     <string name="weight_updated">Peso actualizado exitosamente</string>
+    <string name="weight_already_registered">Ya has registrado tu peso hoy</string>
+    <string name="enter_valid_weight">Por favor, ingresa un peso válido</string>
+    <string name="exercise_updated">Ejercicio actualizado exitosamente</string>
+    <string name="error_updating_exercise">Error al actualizar el ejercicio</string>
+    <string name="error_adding_exercise">Error al añadir el ejercicio</string>
+    <string name="error_deleting_exercise">Error al eliminar el ejercicio</string>
+    <string name="error_saving_changes">Error al guardar los cambios</string>
+    <string name="error_saving_progress">Error al guardar el progreso</string>
+    <string name="error_loading_exercises">Error al cargar los ejercicios</string>
+    <string name="error_saving_history">Error al guardar el historial</string>
+    <string name="error_updating_profile">Error al actualizar el perfil</string>
+    <string name="error_user_not_identified">Error: Usuario no identificado</string>
+    <string name="congratulations_goal_reached">¡Felicidades! Has alcanzado tu objetivo de peso</string>
+    <string name="series_completed">Ya has completado todas las series de este ejercicio</string>
+    <string name="values_greater_than_zero">Los valores deben ser mayores que 0</string>
+    <string name="enter_valid_numbers">Por favor, ingresa números válidos</string>
+    
+    <!-- Diálogos -->
+    <string name="delete_exercise_title">Eliminar ejercicio</string>
+    <string name="delete_exercise_message">¿Estás seguro de que quieres eliminar este ejercicio?</string>
+    <string name="delete_routine_title">Eliminar rutina</string>
+    <string name="delete_routine_message">¿Estás seguro de que quieres eliminar esta rutina?</string>
+    <string name="exit_without_saving_title">¿Salir sin guardar?</string>
+    <string name="exit_without_saving_message">Tienes progreso sin guardar. ¿Estás seguro de que quieres salir?</string>
+    <string name="delete">Eliminar</string>
+    <string name="exit">Salir</string>
+    <string name="routine_created">¡Rutina \"%s\" creada!</string>
+    <string name="name_cannot_be_empty">El nombre no puede estar vacío</string>
+    <string name="changes_saved">Cambios guardados</string>
     
     <!-- Botones -->
     <string name="save">Guardar</string>
     <string name="cancel">Cancelar</string>
     <string name="logout">Cerrar Sesión</string>
     <string name="edit">Editar</string>
-    <string name="delete">Eliminar</string>
+    <string name="ok">Aceptar</string>
+
+    <!-- Arrays -->
+    <string-array name="goals_array">
+        <item>perder</item>
+        <item>ganar</item>
+        <item>mantener</item>
+    </string-array>
+    
+    <!-- Otros -->
+    <string name="titleSession">Ingrese Nombre</string>
 
     <!-- Planes de Entrenamiento -->
     <string name="my_workouts">Mis Entrenamientos</string>
@@ -99,26 +144,15 @@
     <string name="delete_routine">Eliminar Rutina</string>
     <string name="save_changes">Guardar Cambios</string>
     <string name="training">Entrenamiento</string>
-    <string name="day_of_total">Día %1$d de %2$d</string>
     <string name="upper_body">Tren superior</string>
     <string name="save_training_session">Guardar Entrenamiento</string>
-    
-    <!-- Arrays -->
-    <string-array name="goals_array">
-        <item>perder</item>
-        <item>ganar</item>
-        <item>mantener</item>
-    </string-array>
-    
-    <!-- Otros -->
-    <string name="titleSession">Ingrese Nombre</string>
+    <string name="reps_info">Se recomienda hacer entre 6 y 12 repeticiones por ejercicio</string>
 
     <!-- Exercise Progress -->
-    <string name="last_weight">Último peso: %1$.1f kg</string>
-    <string name="suggested_weight">Peso sugerido: %1$.1f kg</string>
+    <string name="last_weight">Último: %1$.1f kg</string>
+    <string name="suggested_weight">Sugerido: %1$.1f kg</string>
     <string name="sets_reps_format">%1$d/%2$d series x %3$d reps</string>
-
-    <!-- Training -->
-    <string name="exercise_item_title">%1$s - Último peso: %2$.1f kg</string>
-    <string name="exercise_item_subtitle">%1$d series x %2$d reps - Peso sugerido: %3$.1f kg</string>
+    <string name="selecciona_una_rutina_para_editar">Selecciona una rutina para editar</string>
+    <string name="select_routine_name">Nombre de la rutina</string>
+    <string name="calories">Calorias diarias</string>
 </resources> 

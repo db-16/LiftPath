@@ -1,60 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardExercise"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginVertical="4dp"
     app:cardCornerRadius="8dp"
-    app:cardElevation="4dp"
+    app:cardElevation="2dp"
     android:background="?android:attr/selectableItemBackground"
-    app:cardBackgroundColor="#1E1E1E">
+    app:cardBackgroundColor="@color/card_background">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:padding="16dp">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tvExerciseName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#FFFFFF"
+                android:textColor="@color/white"
                 android:textSize="18sp"
-                android:textStyle="bold" />
+                android:fontFamily="@font/plus_jakarta_sans_bold"
+                tools:text="Press de Banca"/>
 
             <TextView
                 android:id="@+id/tvSetsReps"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#AAAAAA"
-                android:textSize="14sp"
-                android:layout_marginTop="4dp" />
-
-            <TextView
-                android:id="@+id/tvCurrentWeight"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="#AAAAAA"
-                android:textSize="14sp"
-                android:layout_marginTop="4dp" />
-
-            <TextView
-                android:id="@+id/tvEstimatedWeight"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="#4CAF50"
+                android:textColor="#78909C"
                 android:textSize="14sp"
                 android:layout_marginTop="4dp"
-                android:visibility="visible" />
+                android:fontFamily="@font/plus_jakarta_sans"
+                tools:text="4 series x 12 reps"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
+
+                <TextView
+                    android:id="@+id/tvCurrentWeight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:background="@drawable/rounded_corner_background"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="4dp"
+                    android:layout_marginEnd="8dp"
+                    android:fontFamily="@font/plus_jakarta_sans"
+                    tools:text="Último: 60 kg"/>
+
+                <TextView
+                    android:id="@+id/tvEstimatedWeight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/goal_achieved"
+                    android:textSize="14sp"
+                    android:background="@drawable/rounded_corner_background"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="4dp"
+                    android:fontFamily="@font/plus_jakarta_sans"
+                    tools:text="Sugerido: 62.5 kg"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </RelativeLayout>
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_arrow_right"
+            android:tint="@color/white"
+            android:layout_gravity="center_vertical"/>
+
+    </LinearLayout>
 
 </androidx.cardview.widget.CardView>

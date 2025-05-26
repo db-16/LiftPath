@@ -17,7 +17,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 public class Profile extends AppCompatActivity {
 
-    private TextView tvNameAge, tvCurrentWeight, tvGoal, tvTrainingCount, tvDailyCalories;
+    private TextView tvName, tvAge, tvHeight, tvGender, tvEmail, tvCurrentWeight, tvGoal, tvTrainingCount, tvDailyCalories;
     private Button btnSettings, btnLogout;
     private String currentUserMail;
     private FirebaseFirestore db;
@@ -55,7 +55,11 @@ public class Profile extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         // Vinculamos los componentes de la UI
-        tvNameAge = findViewById(R.id.tvNameAge);
+        tvName = findViewById(R.id.tvName);
+        tvAge = findViewById(R.id.tvAge);
+        tvHeight = findViewById(R.id.tvHeight);
+        tvGender = findViewById(R.id.tvGender);
+        tvEmail = findViewById(R.id.tvEmail);
         tvCurrentWeight = findViewById(R.id.tvCurrentWeight);
         tvGoal = findViewById(R.id.tvGoal);
         tvTrainingCount = findViewById(R.id.tvTrainingCount);
@@ -81,13 +85,28 @@ public class Profile extends AppCompatActivity {
                     if (documentSnapshot.exists()) {
                         User user = documentSnapshot.toObject(User.class);
                         if (user != null) {
-                            tvNameAge.setText(getString(R.string.name_age, user.getName(), user.getAge()));
+                            user.setId(mAuth.getCurrentUser().getUid());
+                            // Actualizar información personal
+                            tvName.setText(user.getName());
+                            tvAge.setText(getString(R.string.years_old, user.getAge()));
+                            tvHeight.setText(getString(R.string.height_cm, user.getHeight()));
+                            // Comprobación de nulidad para el género
+                            String gender = user.getGender();
+                            if (gender != null) {
+                                tvGender.setText(gender.equals("MALE") ? 
+                                    getString(R.string.male) : getString(R.string.female));
+                            } else {
+                                tvGender.setText(getString(R.string.male)); // Valor por defecto
+                            }
+                            tvEmail.setText(user.getMail());
+                            
+                            // Actualizar peso y objetivo
                             tvCurrentWeight.setText(getString(R.string.weight_format, user.getCurrentWeight()));
                             
                             // Calcular la diferencia con el objetivo
                             double difference = user.getGoalWeight() - user.getCurrentWeight();
                             String goalMessage;
-                            if (Math.abs(difference) < 0.1) { // Consideramos objetivo cumplido si la diferencia es menor a 0.1 kg
+                            if (Math.abs(difference) < 0.1) {
                                 goalMessage = getString(R.string.goal_achieved);
                                 tvGoal.setTextColor(getResources().getColor(R.color.goal_achieved));
                             } else if (difference > 0) {
@@ -99,8 +118,14 @@ public class Profile extends AppCompatActivity {
                             }
                             tvGoal.setText(goalMessage);
 
-                            // Mostrar calorías diarias
-                            tvDailyCalories.setText(getString(R.string.calories_per_day, user.getDailyCalories()));
+                            // Recalcular y mostrar calorías diarias
+                            new Thread(() -> {
+                                user.calculateDailyCalories();
+                                // Actualizar la UI en el hilo principal
+                                runOnUiThread(() -> {
+                                    tvDailyCalories.setText(getString(R.string.calories_per_day, user.getDailyCalories()));
+                                });
+                            }).start();
                         }
                     }
                 })

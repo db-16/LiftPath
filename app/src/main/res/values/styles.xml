@@ -23,4 +23,27 @@
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:backgroundDimAmount">0.5</item>
     </style>
+
+    <!-- Estilo para el TextInputLayout en diálogos -->
+    <style name="Widget.App.Dialog.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/dialog_button_primary</item>
+        <item name="boxBackgroundColor">@color/dialog_input_background</item>
+        <item name="hintTextColor">@color/dialog_text_secondary</item>
+        <item name="android:textColorHint">@color/dialog_text_secondary</item>
+    </style>
+
+    <!-- Estilo para los botones primarios del diálogo -->
+    <style name="Widget.App.Dialog.Button.Primary" parent="Widget.MaterialComponents.Button">
+        <item name="android:backgroundTint">@color/dialog_button_primary</item>
+        <item name="android:textColor">@color/dialog_button_text</item>
+        <item name="android:padding">16dp</item>
+        <item name="cornerRadius">8dp</item>
+    </style>
+
+    <!-- Estilo para los botones secundarios del diálogo -->
+    <style name="Widget.App.Dialog.Button.Secondary" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">@color/dialog_text_secondary</item>
+        <item name="rippleColor">@color/dialog_button_secondary</item>
+        <item name="android:padding">16dp</item>
+    </style>
 </resources>
