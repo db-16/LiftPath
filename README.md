@@ -72,9 +72,9 @@ Este proyecto es parte de un Trabajo de Fin de Grado (TFG) desarrollado por Dani
 Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
 
 ## 👨‍💻 Desarrollador
-- Daniel Mario
+- Daniel Blanco y Mario Sanchez
 - Trabajo de Fin de Grado
-- Universidad Rey Juan Carlos
+- Ies Juan de la Cierva
 
 ---
 © 2024 FitTrack. Todos los derechos reservados. 
