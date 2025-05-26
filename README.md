@@ -1,4 +1,4 @@
-# FitTrack - Tu Compañero de Entrenamiento Personal
+# LiftPath - Tu Compañero de Entrenamiento Personal
 
 ## 📱 Descripción
 FitTrack es una aplicación móvil Android diseñada para ayudarte a alcanzar tus objetivos de fitness y seguir tu progreso de entrenamiento. Con una interfaz intuitiva y moderna, FitTrack te permite gestionar tus rutinas de ejercicio y monitorear tu progreso de peso de manera efectiva.
