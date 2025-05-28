@@ -128,7 +128,7 @@ public class ProgressActivity extends AppCompatActivity {
         weightChart.getAxisLeft().setTextColor(Color.WHITE);
         weightChart.getAxisLeft().setTextSize(11f);
         weightChart.getAxisLeft().setDrawGridLines(true);
-        weightChart.getAxisLeft().setGridColor(Color.parseColor("#20FFFFFF")); // Grid más sutil
+        weightChart.getAxisLeft().setGridColor(Color.parseColor("#20FFFFFF"));
         weightChart.getAxisLeft().setGridLineWidth(0.5f);
         weightChart.getAxisLeft().setGranularity(1f);
         weightChart.getAxisLeft().setDrawAxisLine(true);

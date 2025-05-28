@@ -150,10 +150,6 @@ public class User {
         } else {
             tmb = (10 * currentWeight) + (6.25 * height) - (5 * age) - 161;
         }
-
-        Log.d("CalorieCalculation", "TMB inicial: " + tmb);
-        Log.d("CalorieCalculation", "Datos usados - Peso: " + currentWeight + ", Altura: " + height + ", Edad: " + age + ", Género: " + gender);
-
         // Crear un CountDownLatch para esperar la respuesta de Firebase
         CountDownLatch latch = new CountDownLatch(1);
         final double finalTmb = tmb;
@@ -183,10 +179,6 @@ public class User {
 
                             // Calcular calorías totales
                             double totalCalories = finalTmb * activityFactor;
-                            Log.d("CalorieCalculation", "TMB: " + finalTmb);
-                            Log.d("CalorieCalculation", "Factor de actividad: " + activityFactor);
-                            Log.d("CalorieCalculation", "Calorías después de factor de actividad: " + totalCalories);
-
                             // Ajustar según el objetivo
                             if ("LOSE".equals(goalType)) {
                                 totalCalories -= 500;
@@ -194,8 +186,7 @@ public class User {
                                 totalCalories += 700;
                             }
 
-                            Log.d("CalorieCalculation", "Calorías finales después de ajuste: " + totalCalories);
-                            
+
                             // Actualizar el valor
                             this.dailyCalories = (int) Math.round(totalCalories);
 
