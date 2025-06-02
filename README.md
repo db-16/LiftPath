@@ -77,4 +77,4 @@ Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más det
 - Ies Juan de la Cierva
 
 ---
-© 2024 FitTrack. Todos los derechos reservados. 
+© 2025 LiftPath. Todos los derechos reservados. 
