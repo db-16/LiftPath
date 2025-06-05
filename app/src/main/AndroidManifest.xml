@@ -1,48 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:allowBackup="true"
-        android:label="TFGDanielMario"
         android:icon="@mipmap/ic_launcher"
+        android:label="TFGDanielMario"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TFGDanielMario">
-
-        <activity android:name=".LoginActivity"
+        <activity
+            android:name=".ChatActivity"
+            android:exported="true" />
+        <activity
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".RegisterActivity" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".Profile"
-            android:exported="true"/>
-
-        <!-- Nueva actividad para el plan de entrenamiento -->
-        <activity android:name=".MyWorkoutPlanActivity"
-            android:exported="true" />
-
-        <!-- Actividad para añadir una sesión -->
-        <activity android:name=".AddTrainingSessionActivity"
+        <activity
+            android:name=".Profile"
+            android:exported="true" /> <!-- Nueva actividad para el plan de entrenamiento -->
+        <activity
+            android:name=".MyWorkoutPlanActivity"
+            android:exported="true" /> <!-- Actividad para añadir una sesión -->
+        <activity
+            android:name=".AddTrainingSessionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TrainingSessionActivity"
+            android:parentActivityName=".MyWorkoutPlanActivity" />
+        <activity
+            android:name=".EditPlanListActivity"
+            android:parentActivityName=".MyWorkoutPlanActivity" />
+        <activity
+            android:name=".EditPlanDetailActivity"
+            android:parentActivityName=".EditPlanListActivity" /> <!-- Nueva actividad para el progreso -->
+        <activity
+            android:name=".ProgressActivity"
             android:exported="false" />
 
-        <activity android:name=".TrainingSessionActivity"
-            android:parentActivityName=".MyWorkoutPlanActivity"/>
-        <activity android:name=".EditPlanListActivity"
-            android:parentActivityName=".MyWorkoutPlanActivity"/>
-        <activity android:name=".EditPlanDetailActivity"
-            android:parentActivityName=".EditPlanListActivity"/>
-        
-        <!-- Nueva actividad para el progreso -->
-        <activity android:name=".ProgressActivity"
-            android:exported="false" />
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

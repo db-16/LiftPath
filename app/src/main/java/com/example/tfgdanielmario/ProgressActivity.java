@@ -66,7 +66,13 @@ public class ProgressActivity extends AppCompatActivity {
                 startActivity(new Intent(this, Profile.class));
                 finish();
                 return true;
-            } else if (itemId == R.id.navigation_progress) {
+            }
+            else if (itemId == R.id.navigation_chat) {
+                startActivity(new Intent(this, ChatActivity.class));
+                finish();
+                return true;
+            }
+            else if (itemId == R.id.navigation_progress) {
                 return true;
             }
             return false;

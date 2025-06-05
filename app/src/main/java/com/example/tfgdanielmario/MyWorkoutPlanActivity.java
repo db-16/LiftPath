@@ -48,7 +48,13 @@ public class MyWorkoutPlanActivity extends AppCompatActivity {
                 startActivity(new Intent(this, Profile.class));
                 finish();
                 return true;
-            } else if (itemId == R.id.navigation_workout) {
+            }
+            else if (itemId == R.id.navigation_chat) {
+                startActivity(new Intent(this, ChatActivity.class));
+                finish();
+                return true;
+            }
+            else if (itemId == R.id.navigation_workout) {
                 return true;
             }
             return false;

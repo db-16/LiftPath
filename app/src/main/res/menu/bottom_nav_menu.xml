@@ -14,4 +14,10 @@
         android:id="@+id/navigation_profile"
         android:icon="@drawable/user_circle"
         android:title="Profile" />
+
+    <item
+        android:id="@+id/navigation_chat"
+        android:icon="@drawable/user_chat"
+        android:title="Chat" />
+
 </menu> 

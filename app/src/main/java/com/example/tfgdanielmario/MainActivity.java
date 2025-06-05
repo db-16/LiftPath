@@ -39,6 +39,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             Intent intent = new Intent(this, Profile.class);
             startActivity(intent);
             return true;
+        } else if (item.getItemId() == R.id.navigation_chat) {
+            Intent intent = new Intent(this, ChatActivity.class);
+            startActivity(intent);
+            return true;
         }
         return false;
     }
@@ -63,6 +67,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             bottomNavigationView.setSelectedItemId(R.id.navigation_progress);
         } else if (currentActivity == Profile.class) {
             bottomNavigationView.setSelectedItemId(R.id.navigation_profile);
-        }
+        }  else if (currentActivity == ChatActivity.class) {
+        bottomNavigationView.setSelectedItemId(R.id.navigation_chat);
+    }
+
     }
 }

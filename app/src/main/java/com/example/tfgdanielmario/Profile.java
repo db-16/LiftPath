@@ -35,16 +35,22 @@ public class Profile extends AppCompatActivity {
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.navigation_progress) {
-                Intent progressIntent = new Intent(Profile.this, ProgressActivity.class);
+                Intent progressIntent = new Intent(this, ProgressActivity.class);
                 startActivity(progressIntent);
                 finish();
                 return true;
             } else if (itemId == R.id.navigation_workout) {
-                Intent workoutIntent = new Intent(Profile.this, MyWorkoutPlanActivity.class);
+                Intent workoutIntent = new Intent(this, MyWorkoutPlanActivity.class);
                 startActivity(workoutIntent);
                 finish();
                 return true;
-            } else if (itemId == R.id.navigation_profile) {
+            }
+            else if (item.getItemId() == R.id.navigation_chat) {
+                Intent intent = new Intent(this, ChatActivity.class);
+                startActivity(intent);
+                return true;
+            }
+            else if (itemId == R.id.navigation_profile) {
                 return true;
             }
             return false;
