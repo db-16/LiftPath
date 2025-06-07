@@ -27,13 +27,13 @@
             android:id="@+id/editTextMessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Escribe un mensaje"/>
+            android:hint="@string/escribe_un_mensaje"/>
 
         <Button
             android:id="@+id/buttonSend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Enviar"
+            android:text="@string/enviar"
             android:layout_marginBottom="50dp"
             />
     </LinearLayout>

@@ -155,4 +155,6 @@
     <string name="selecciona_una_rutina_para_editar">Selecciona una rutina para editar</string>
     <string name="select_routine_name">Nombre de la rutina</string>
     <string name="calories">Calorias diarias</string>
+    <string name="enviar">Enviar</string>
+    <string name="escribe_un_mensaje">Escribe un mensaje</string>
 </resources> 

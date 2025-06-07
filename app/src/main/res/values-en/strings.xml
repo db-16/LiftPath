@@ -155,4 +155,6 @@
     <string name="selecciona_una_rutina_para_editar">Select session</string>
     <string name="select_routine_name">Routine name</string>
     <string name="calories">Dialy Calories</string>
+    <string name="enviar">Send</string>
+    <string name="escribe_un_mensaje">Write a message</string>
 </resources> 
