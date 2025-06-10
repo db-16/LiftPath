@@ -247,23 +247,19 @@ public class EditPlanDetailActivity extends AppCompatActivity {
     }
 
     private void deletePlan() {
-        // Primero eliminar todos los ejercicios
         db.collection("trainingSessions")
                 .document(sessionId)
                 .collection("exercises")
                 .get()
                 .addOnSuccessListener(querySnapshot -> {
-                    // Usar batch para eliminar todo de forma atómica
                     com.google.firebase.firestore.WriteBatch batch = db.batch();
-                    
                     // Añadir eliminación de ejercicios al batch
                     querySnapshot.getDocuments().forEach(doc -> 
                         batch.delete(doc.getReference()));
                     
                     // Añadir eliminación de la sesión al batch
                     batch.delete(db.collection("trainingSessions").document(sessionId));
-                    
-                    // Ejecutar el batch
+
                     batch.commit()
                         .addOnSuccessListener(aVoid -> {
                             Toast.makeText(this, "Rutina eliminada", Toast.LENGTH_SHORT).show();
