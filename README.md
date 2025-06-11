@@ -7,41 +7,46 @@ LiftPath es una aplicación móvil Android diseñada para ayudarte a alcanzar tu
   <table>
     <tr>
       <td align="center">
-        <img src="screenshots/Login.png" alt="Pantalla de Login" width="400"/>
+        <img src="screenshots/Login.png" alt="Pantalla de Login" width="800"/>
         <br>
         <em>Login</em>
       </td>
       <td align="center">
-        <img src="screenshots/Register.png" alt="Registro" width="400"/>
+        <img src="screenshots/Register.png" alt="Registro" width="800"/>
         <br>
         <em>Registro</em>
       </td>
       <td align="center">
-        <img src="screenshots/TrainingOrange.png" alt="Realizar Entrenamientos" width="400"/>
+        <img src="screenshots/TrainingOrange.png" alt="Realizar Entrenamientos" width="800"/>
         <br>
         <em>Realizar Entrenamientos</em>
       </td>
       <td align="center">
-        <img src="screenshots/AddTraining.png" alt="Gestionar entrenamientos" width="400"/>
+        <img src="screenshots/AddTraining.png" alt="Gestionar entrenamientos" width="800"/>
         <br>
         <em>Gestionar entrenamientos</em>
       </td>
     </tr>
     <tr>
       <td align="center">
-        <img src="screenshots/Progress.png" alt="Seguimiento de Progreso" width="400"/>
+        <img src="screenshots/Progress.png" alt="Seguimiento de Progreso" width="800"/>
         <br>
         <em>Seguimiento de Progreso</em>
       </td>
       <td align="center">
-        <img src="screenshots/Profile.png" alt="Perfil de Usuario" width="400"/>
+        <img src="screenshots/Profile.png" alt="Perfil de Usuario" width="800"/>
         <br>
         <em>Perfil de Usuario</em>
       </td>
       <td align="center">
-        <img src="screenshots/exercises.png" alt="Lista de Ejercicios" width="400"/>
+        <img src="screenshots/exercises.png" alt="Lista de Ejercicios" width="800"/>
         <br>
         <em>Lista de Ejercicios</em>
+      </td>
+       <td align="center">
+        <img src="screenshots/Chat.png" alt="Lista de Ejercicios" width="800"/>
+        <br>
+        <em>Chat</em>
       </td>
     </tr>
   </table>
