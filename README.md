@@ -3,49 +3,52 @@
 ## 📱 Descripción
 LiftPath es una aplicación móvil Android diseñada para ayudarte a alcanzar tus objetivos de fitness y seguir tu progreso de entrenamiento. Con una interfaz intuitiva y moderna, LiftPath te permite gestionar tus rutinas de ejercicio y monitorear tu progreso de peso de manera efectiva.
 ## 📸 Capturas de Pantalla
-<div align="center">
-  <table>
-    <tr>
-      <td align="center">
-        <img src="screenshots/Login.png" alt="Pantalla de Login" width="800"/>
-        <br>
-        <em>Login</em>
-      </td>
-      <td align="center">
-        <img src="screenshots/Register.png" alt="Registro" width="800"/>
-        <br>
-        <em>Registro</em>
-      </td>
-      <td align="center">
-        <img src="screenshots/TrainingOrange.png" alt="Realizar Entrenamientos" width="800"/>
-        <br>
-        <em>Realizar Entrenamientos</em>
-      </td>
-      <td align="center">
-        <img src="screenshots/AddTraining.png" alt="Gestionar entrenamientos" width="800"/>
-        <br>
-        <em>Gestionar entrenamientos</em>
-      </td>
-    </tr>
-    <tr>
-      <td align="center">
-        <img src="screenshots/Progress.png" alt="Seguimiento de Progreso" width="800"/>
-        <br>
-        <em>Seguimiento de Progreso</em>
-      </td>
-      <td align="center">
-        <img src="screenshots/Profile.png" alt="Perfil de Usuario" width="800"/>
-        <br>
-        <em>Perfil de Usuario</em>
-      </td>
-       <td align="center">
-        <img src="screenshots/Chat.png" alt="Lista de Ejercicios" width="800"/>
-        <br>
-        <em>Chat</em>
-      </td>
-    </tr>
-  </table>
-</div>
+
+### Inicio de Sesión y Registro
+<p align="center">
+  <img src="screenshots/Login.png" alt="Pantalla de Login" width="900"/>
+  <br>
+  <em>Pantalla de Login</em>
+</p>
+
+<p align="center">
+  <img src="screenshots/Register.png" alt="Registro" width="900"/>
+  <br>
+  <em>Pantalla de Registro</em>
+</p>
+
+### Gestión de Entrenamientos
+<p align="center">
+  <img src="screenshots/TrainingOrange.png" alt="Realizar Entrenamientos" width="900"/>
+  <br>
+  <em>Realizar Entrenamientos</em>
+</p>
+
+<p align="center">
+  <img src="screenshots/AddTraining.png" alt="Gestionar entrenamientos" width="900"/>
+  <br>
+  <em>Gestionar Entrenamientos</em>
+</p>
+
+### Progreso y Perfil
+<p align="center">
+  <img src="screenshots/Progress.png" alt="Seguimiento de Progreso" width="900"/>
+  <br>
+  <em>Seguimiento de Progreso</em>
+</p>
+
+<p align="center">
+  <img src="screenshots/Profile.png" alt="Perfil de Usuario" width="900"/>
+  <br>
+  <em>Perfil de Usuario</em>
+</p>
+
+### Comunicación
+<p align="center">
+  <img src="screenshots/Chat.png" alt="Chat" width="900"/>
+  <br>
+  <em>Chat con la Comunidad</em>
+</p>
 
 ## ✨ Características Principales
 
