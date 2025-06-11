@@ -38,11 +38,6 @@ LiftPath es una aplicación móvil Android diseñada para ayudarte a alcanzar tu
         <br>
         <em>Perfil de Usuario</em>
       </td>
-      <td align="center">
-        <img src="screenshots/exercises.png" alt="Lista de Ejercicios" width="800"/>
-        <br>
-        <em>Lista de Ejercicios</em>
-      </td>
        <td align="center">
         <img src="screenshots/Chat.png" alt="Lista de Ejercicios" width="800"/>
         <br>
