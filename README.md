@@ -58,6 +58,9 @@ LiftPath es una aplicación móvil Android diseñada para ayudarte a alcanzar tu
    - Actualiza tu peso regularmente
    - Visualiza tu progreso en los gráficos
    - Monitorea tu porcentaje hacia el objetivo
+5. **Chatea con la comunidad**:
+   - Pulsa en el icono del chat
+   - Comienza a escribir mensajes para resolver dudas y compartir tu progreso
 
 ## 🔒 Privacidad y Seguridad
 - Todos los datos se almacenan de forma segura en Firebase
