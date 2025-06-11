@@ -2,6 +2,50 @@
 
 ## 📱 Descripción
 LiftPath es una aplicación móvil Android diseñada para ayudarte a alcanzar tus objetivos de fitness y seguir tu progreso de entrenamiento. Con una interfaz intuitiva y moderna, LiftPath te permite gestionar tus rutinas de ejercicio y monitorear tu progreso de peso de manera efectiva.
+## 📸 Capturas de Pantalla
+<div align="center">
+  <table>
+    <tr>
+      <td align="center">
+        <img src="screenshots/Login.png" alt="Pantalla de Login" width="200"/>
+        <br>
+        <em>Login</em>
+      </td>
+      <td align="center">
+        <img src="screenshots/Register.png" alt="Registro" width="200"/>
+        <br>
+        <em>Registro</em>
+      </td>
+      <td align="center">
+        <img src="screenshots/TrainingOrange.png" alt="Realizar Entrenamientos" width="200"/>
+        <br>
+        <em>Realizar Entrenamientos</em>
+      </td>
+      <td align="center">
+        <img src="screenshots/AddTraining" alt="Gestionar entrenamientos" width="200"/>
+        <br>
+        <em>Gestionar entrenamientos</em>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <img src="screenshots/Progress.png" alt="Seguimiento de Progreso" width="200"/>
+        <br>
+        <em>Seguimiento de Progreso</em>
+      </td>
+      <td align="center">
+        <img src="screenshots/Profile" alt="Perfil de Usuario" width="200"/>
+        <br>
+        <em>Perfil de Usuario</em>
+      </td>
+      <td align="center">
+        <img src="screenshots/exercises.png" alt="Lista de Ejercicios" width="200"/>
+        <br>
+        <em>Lista de Ejercicios</em>
+      </td>
+    </tr>
+  </table>
+</div>
 
 ## ✨ Características Principales
 
