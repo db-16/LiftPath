@@ -4,51 +4,57 @@
 LiftPath es una aplicación móvil Android diseñada para ayudarte a alcanzar tus objetivos de fitness y seguir tu progreso de entrenamiento. Con una interfaz intuitiva y moderna, LiftPath te permite gestionar tus rutinas de ejercicio y monitorear tu progreso de peso de manera efectiva.
 ## 📸 Capturas de Pantalla
 
-### Inicio de Sesión y Registro
-<p align="center">
-  <img src="screenshots/Login.png" alt="Pantalla de Login" width="900"/>
-  <br>
-  <em>Pantalla de Login</em>
-</p>
-
-<p align="center">
-  <img src="screenshots/Register.png" alt="Registro" width="900"/>
-  <br>
-  <em>Pantalla de Registro</em>
-</p>
-
-### Gestión de Entrenamientos
-<p align="center">
-  <img src="screenshots/TrainingOrange.png" alt="Realizar Entrenamientos" width="900"/>
-  <br>
-  <em>Realizar Entrenamientos</em>
-</p>
-
-<p align="center">
-  <img src="screenshots/AddTraining.png" alt="Gestionar entrenamientos" width="900"/>
-  <br>
-  <em>Gestionar Entrenamientos</em>
-</p>
-
-### Progreso y Perfil
-<p align="center">
-  <img src="screenshots/Progress.png" alt="Seguimiento de Progreso" width="900"/>
-  <br>
-  <em>Seguimiento de Progreso</em>
-</p>
-
-<p align="center">
-  <img src="screenshots/Profile.png" alt="Perfil de Usuario" width="900"/>
-  <br>
-  <em>Perfil de Usuario</em>
-</p>
-
-### Comunicación
-<p align="center">
-  <img src="screenshots/Chat.png" alt="Chat" width="900"/>
-  <br>
-  <em>Chat con la Comunidad</em>
-</p>
+<div style="display: flex; flex-wrap: wrap; justify-content: space-around;">
+  <div style="flex: 0 1 45%; margin: 10px;">
+    <p align="center">
+      <img src="screenshots/Login.png" alt="Pantalla de Login" width="400"/>
+      <br>
+      <em>Pantalla de Login</em>
+    </p>
+  </div>
+  <div style="flex: 0 1 45%; margin: 10px;">
+    <p align="center">
+      <img src="screenshots/Register.png" alt="Registro" width="400"/>
+      <br>
+      <em>Pantalla de Registro</em>
+    </p>
+  </div>
+  <div style="flex: 0 1 45%; margin: 10px;">
+    <p align="center">
+      <img src="screenshots/TrainingOrange.png" alt="Realizar Entrenamientos" width="400"/>
+      <br>
+      <em>Realizar Entrenamientos</em>
+    </p>
+  </div>
+  <div style="flex: 0 1 45%; margin: 10px;">
+    <p align="center">
+      <img src="screenshots/AddTraining.png" alt="Gestionar entrenamientos" width="400"/>
+      <br>
+      <em>Gestionar Entrenamientos</em>
+    </p>
+  </div>
+  <div style="flex: 0 1 45%; margin: 10px;">
+    <p align="center">
+      <img src="screenshots/Progress.png" alt="Seguimiento de Progreso" width="400"/>
+      <br>
+      <em>Seguimiento de Progreso</em>
+    </p>
+  </div>
+  <div style="flex: 0 1 45%; margin: 10px;">
+    <p align="center">
+      <img src="screenshots/Profile.png" alt="Perfil de Usuario" width="400"/>
+      <br>
+      <em>Perfil de Usuario</em>
+    </p>
+  </div>
+  <div style="flex: 0 1 45%; margin: 10px;">
+    <p align="center">
+      <img src="screenshots/Chat.png" alt="Chat" width="400"/>
+      <br>
+      <em>Chat con la Comunidad</em>
+    </p>
+  </div>
+</div>
 
 ## ✨ Características Principales
 
