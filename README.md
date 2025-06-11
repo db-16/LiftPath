@@ -4,57 +4,51 @@
 LiftPath es una aplicación móvil Android diseñada para ayudarte a alcanzar tus objetivos de fitness y seguir tu progreso de entrenamiento. Con una interfaz intuitiva y moderna, LiftPath te permite gestionar tus rutinas de ejercicio y monitorear tu progreso de peso de manera efectiva.
 ## 📸 Capturas de Pantalla
 
-<div style="display: flex; flex-wrap: wrap; justify-content: space-around;">
-  <div style="flex: 0 1 45%; margin: 10px;">
-    <p align="center">
+<table>
+  <tr>
+    <td align="center">
       <img src="screenshots/Login.png" alt="Pantalla de Login" width="400"/>
       <br>
       <em>Pantalla de Login</em>
-    </p>
-  </div>
-  <div style="flex: 0 1 45%; margin: 10px;">
-    <p align="center">
+    </td>
+    <td align="center">
       <img src="screenshots/Register.png" alt="Registro" width="400"/>
       <br>
       <em>Pantalla de Registro</em>
-    </p>
-  </div>
-  <div style="flex: 0 1 45%; margin: 10px;">
-    <p align="center">
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
       <img src="screenshots/TrainingOrange.png" alt="Realizar Entrenamientos" width="400"/>
       <br>
       <em>Realizar Entrenamientos</em>
-    </p>
-  </div>
-  <div style="flex: 0 1 45%; margin: 10px;">
-    <p align="center">
+    </td>
+    <td align="center">
       <img src="screenshots/AddTraining.png" alt="Gestionar entrenamientos" width="400"/>
       <br>
       <em>Gestionar Entrenamientos</em>
-    </p>
-  </div>
-  <div style="flex: 0 1 45%; margin: 10px;">
-    <p align="center">
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
       <img src="screenshots/Progress.png" alt="Seguimiento de Progreso" width="400"/>
       <br>
       <em>Seguimiento de Progreso</em>
-    </p>
-  </div>
-  <div style="flex: 0 1 45%; margin: 10px;">
-    <p align="center">
+    </td>
+    <td align="center">
       <img src="screenshots/Profile.png" alt="Perfil de Usuario" width="400"/>
       <br>
       <em>Perfil de Usuario</em>
-    </p>
-  </div>
-  <div style="flex: 0 1 45%; margin: 10px;">
-    <p align="center">
+    </td>
+  </tr>
+  <tr>
+    <td align="center" colspan="2">
       <img src="screenshots/Chat.png" alt="Chat" width="400"/>
       <br>
       <em>Chat con la Comunidad</em>
-    </p>
-  </div>
-</div>
+    </td>
+  </tr>
+</table>
 
 ## ✨ Características Principales
 
