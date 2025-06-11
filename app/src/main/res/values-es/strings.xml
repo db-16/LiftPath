@@ -157,4 +157,8 @@
     <string name="calories">Calorias diarias</string>
     <string name="enviar">Enviar</string>
     <string name="escribe_un_mensaje">Escribe un mensaje</string>
+
+    <!-- Navegación -->
+    <string name="profile">Perfil</string>
+    <string name="chat">Chat</string>
 </resources> 

@@ -3,21 +3,21 @@
     <item
         android:id="@+id/navigation_progress"
         android:icon="@drawable/weight"
-        android:title="Progress" />
+        android:title="@string/progress" />
 
     <item
         android:id="@+id/navigation_workout"
         android:icon="@drawable/barbell"
-        android:title="MyWorkout" />
+        android:title="@string/training" />
 
     <item
         android:id="@+id/navigation_profile"
         android:icon="@drawable/user_circle"
-        android:title="Profile" />
+        android:title="@string/profile" />
 
     <item
         android:id="@+id/navigation_chat"
         android:icon="@drawable/user_chat"
-        android:title="Chat" />
+        android:title="@string/chat" />
 
 </menu> 
